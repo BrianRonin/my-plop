@@ -1,4 +1,4 @@
-export class caseModifiers {
+export class CaseModifiers {
   constructor(str) {
     this.str = str
   }
@@ -16,13 +16,11 @@ export class caseModifiers {
 export const case_modifiers = {
   camelCase: (text) => {
     function camelize_(text) {
-      text = text.replace(
-        /[-_\s.]+(.)?/g,
-        (_, c) => (c ? c.toUpperCase() : ``),
+      text = text.replace(/[-_\s.]+(.)?/g, (_, c) =>
+        c ? c.toUpperCase() : ``,
       )
       return (
-        text.substr(0, 1).toLowerCase() +
-        text.substr(1)
+        text.substr(0, 1).toLowerCase() + text.substr(1)
       )
     }
     text = text
@@ -45,12 +43,9 @@ export const case_modifiers = {
       .replace(new RegExp(/[^\w\s]/, 'g'), '')
       .replace(
         new RegExp(/\s+(.)(\w*)/, 'g'),
-        ($1, $2, $3) =>
-          `${$2.toUpperCase() + $3}`,
+        ($1, $2, $3) => `${$2.toUpperCase() + $3}`,
       )
-      .replace(new RegExp(/\w/), (s) =>
-        s.toUpperCase(),
-      )
+      .replace(new RegExp(/\w/), (s) => s.toUpperCase())
   },
   options: [
     'camelCase',

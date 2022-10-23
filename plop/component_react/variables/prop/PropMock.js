@@ -1,20 +1,22 @@
-import { caseModifiers } from '../../../utils/caseModifiers'
+import { caseModifiers } from '../../../utils/case_modifiers'
 import { fileNames } from '../../config/fileNames'
 import { $propComponent, userVariables } from '../../settings'
 import { prop } from './Prop'
 
 export class PropMock {
-  constructor(_props) {
+  constructor(_props, modifier_prop, modifier_prop_component) {
     this.props = _props.map((_prop, index) => {
-      const prop = this.formater_propMock
+      const prop = this.formater_propMock(_prop, index)
+      return this.pu
     })
+    this.modifier_prop = modifier_prop
+    this.modifier_prop_component = modifier_prop_component
   }
 
   formater_propMock(_prop) {
-    const prop = new caseModifiers(_prop)
     return _prop.match($propComponent)
-      ? `${userVariables.nameComponent}: ${userVariables.mock}`
-      : `${userVariables.prop}`
+      ? `${this.modifier_prop_component}: ${userVariables.mock},`
+      : `// ${modifier_prop}: ,`
   }
 
   set(value) {

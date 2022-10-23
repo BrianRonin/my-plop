@@ -1,6 +1,6 @@
 // import { transformComponent } from './plop/component_react/ts/transform/transform_components_react_ts'
 // import { Prop } from './plop/component_react/variables/prop/Prop'
-import { testVar } from './teste.js'
+//import { testVar } from './teste.js'
 
 export const var_components = {
   name: 'algum nome',
@@ -36,8 +36,7 @@ export default function (
       },
       {
         type: 'input',
-        message:
-          'O componente faz parte de um grupo?',
+        message: 'O componente faz parte de um grupo?',
         prefix: 'components/',
         filter: (x, r) => {
           if (x) {
@@ -46,8 +45,7 @@ export default function (
               'components/' + y + '/' + r.name
             return x
           } else {
-            r.titleStorybook =
-              'components/' + r.name
+            r.titleStorybook = 'components/' + r.name
             return x
           }
         },
@@ -122,9 +120,7 @@ export default function (
       {
         // *** HAS MOCK? ***
         skip: () => {
-          return var_components.hasMock
-            ? false
-            : 'SEM MOCK'
+          return var_components.hasMock ? false : 'SEM MOCK'
         },
         //tem mock ? //,
         type: 'add',
@@ -150,8 +146,7 @@ export default function (
       {
         type: 'input',
         name: 'name',
-        message:
-          'qual o nome do seu componente markdown?',
+        message: 'qual o nome do seu componente markdown?',
       },
       {
         type: 'input',

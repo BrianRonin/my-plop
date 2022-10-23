@@ -1,43 +1,51 @@
-import { $Component, $propOptional } from '../../settings'
+import {
+  $Component,
+  $propOptional,
+  userVariables,
+} from '../../settings'
 import { PropArg } from './propArg'
+import { PropType } from './PropType'
 
 export class Prop {
-  _prop = []
+  _prop = {}
 
   get prop() {
-    return this.prop ? this.prop : 'sem props'
+    return this._prop
   }
 
-  static formater_prop(prop) {
-    for (let i = 0;i <= prop.length;i++) {
+  formater_prop(prop) {
+    for (let i = 0; i <= prop.length; i++) {
       if (prop[i].match(new RegExp($Component))) {
-        return resolve_prop = prop.substring(i)
+        return prop.substring(i)
       }
     }
   }
 
-  set prop(_props = '') {
-    const props = _props.split(',')
-    props.map((_prop, index) => {
+  push_prop(prop) {
+    const resolve = []
+    prop.split(',').map((_prop, index) => {
       const prop = this.formater_prop(_prop)
-      this._prop.push(prop)
+      resolve.push(prop)
     })
-
-    this.prop = {
-      prop: this._prop,
-      propArg: new PropArg(this._prop).propArg,
-      PropType:
-    }
+    return resolve
   }
 
-  static prop_formater(array, maxLength, index, start, between, end, onlyOne) {
-    return index === 0 ?
-      maxLength > 0
-        ? array.push(start)
-        : array.push(onlyOne)
+  set prop(_props = '') {
+    const { prop, propComponent } = userVariables
+    const _prop = this.push_prop()
 
-      : maxLength === index + 1
-        ? array.push(end)
-        : array.push(between)
+    this._prop = {
+      prop: _prop,
+      propArg: new PropArg(
+        this.prop,
+        prop[1],
+        propComponent[1],
+      ).propArg,
+      PropType: new PropType(
+        this.prop,
+        prop[1],
+        propComponent[1],
+      ).propType,
+    }
   }
 }

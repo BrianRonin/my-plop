@@ -1,6 +1,5 @@
-import { caseModifiers } from '../../../utils/caseModifiers'
+import { array_formater } from '../../../utils/array_formater'
 import { $propComponent } from '../../settings'
-import { Prop } from './Prop'
 
 export class PropArg {
   constructor(
@@ -10,33 +9,24 @@ export class PropArg {
   ) {
     this.props = _props
       .map((_prop, index) => {
-        const prop = this.formater_propArg(
-          _prop,
-          index,
-        )
+        const prop = this.formater_propArg(_prop, index)
         return this.push_propArg(prop, index)
       })
       .join('')
     this.maxLength = _props.length
     this.modifier_prop = modifier_prop
-      ? modifier_prop
-      : 'camelCase'
-    this.modifier_prop_component =
-      modifier_prop_component
-        ? modifier_prop_component
-        : 'properCase'
+    this.modifier_prop_component = modifier_prop_component
   }
 
-  formater_propArg(_prop) {
-    const prop = new caseModifiers(_prop)
-    return _prop.match($propComponent)
-      ? prop.propperCase + 'Props'
-      : prop.camelCase
+  formater_propArg(prop, index) {
+    return prop.match($propComponent)
+      ? this.modifier_prop_component[index]
+      : this.modifier_prop[index]
   }
 
   push_propArg(prop, index) {
     const resolve = []
-    Prop.prop_formater(
+    array_formater(
       resolve,
       this.maxLength,
       index,
