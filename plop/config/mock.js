@@ -1,26 +1,35 @@
-import { var_components } from '../../../plopfile'
+import { var_components } from '../../plopfile.js'
 
-//? variables[*][2] = is one or is many?
-export const molde = {
+export const mock_ = {
   variables: {
     name: {
-      value: var_components.name,
+      input: 'um componente',
       isMany: false,
     },
     props: {
-      value: var_components.props,
+      input: '_prop opcional, #prop component, prop normal',
+      divisor: ',',
+      isMany: true,
+    },
+    bola: {
+      input: 'bola, bola1, #bola2, bola3',
       divisor: ',',
       isMany: true,
     },
   },
   name_component: { default: '{{ properCase name }}}' },
+  title: {
+    default: '{{ properCase name }}}',
+    match: [{ key: '#', value: '{{ camelCase name }}' }],
+  },
   export_and_impot_mock: {
     default: 'mock_{{ snakeCase name }}',
-    var: 'mock',
   },
   prop: {
     default: '{{ camelCase props }}',
-    match: [['#', '{{ properCase props }}Props']],
+    match: [
+      { key: '#', value: '{{ properCase props }}Props' },
+    ],
     spaces: {
       start: '{{}}, ',
       between: '{{}}, ',
@@ -43,7 +52,28 @@ export const molde = {
   },
   prop_mock: {
     default: '// {{ camelCase props }}',
-    match: [['#', '{{ properCase props }}: {{ $mock }}']],
+    match: [
+      {
+        key: '#',
+        value:
+          '{{ properCase props }}: {{ $export_and_impot_mock }}',
+      },
+    ],
+    spaces: {
+      start: '\n\t{{}}: any\n',
+      between: '\t{{}}: any\n',
+      end: '\t{{}}: any\n\t',
+      onlyOne: '\t{{}}: any\n\t',
+    },
+  },
+  bola: {
+    default: '// {{ camelCase bola }}',
+    match: [
+      {
+        key: '#',
+        value: '{{ properCase bola }}: {{ $mock }}',
+      },
+    ],
     spaces: {
       start: '\n\t{{}}: any\n',
       between: '\t{{}}: any\n',
@@ -52,9 +82,3 @@ export const molde = {
     },
   },
 }
-
-const output = {
-  name_component: '',
-  prop: ['\nformatado, ', 'formatado, ', 'formatado'],
-}
-const y = {}

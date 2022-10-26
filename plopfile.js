@@ -9,7 +9,7 @@ export const var_components = {
   hasMock: false,
   hasTest: false,
   hasStorybook: false,
-  props: false,
+  props: '_prop opcional, #prop component, prop normal',
   path: '',
 }
 

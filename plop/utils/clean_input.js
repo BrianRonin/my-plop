@@ -1,4 +1,4 @@
-import { $Component } from '../component_react/settings'
+import { $Component } from '../component_react/settings.js'
 
 export function cleanInput(input) {
   for (let i = 0; i <= input.length; i++) {
