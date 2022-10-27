@@ -1,13 +1,16 @@
 import { var_components } from '../../plopfile.js'
-
+// ! can only match with just one increment, one modifier, and one value
+// ! '$' <== match reserved
+// ? increment ===> -- {{}} --
 export const mock_ = {
   variables: {
     name: {
-      input: 'um componente',
+      input: '#um componente',
       isMany: false,
     },
     props: {
-      input: '_prop opcional, #prop component, prop normal',
+      input:
+        '_prop opcional, #prop component, prop normal, _#prop opcional e component',
       divisor: ',',
       isMany: true,
     },
@@ -19,14 +22,20 @@ export const mock_ = {
   },
   name_component: { default: '{{ properCase name }}}' },
   title: {
-    default: '{{ properCase name }}}',
-    match: [{ key: '#', value: '{{ camelCase name }}' }],
+    default: '{{ camelCase name }}}',
+    match: [
+      {
+        key: '#',
+        value:
+          '{{ camelCase name }} {{ -export_and_import_mock }}',
+      },
+    ],
   },
-  export_and_impot_mock: {
+  export_and_import_mock: {
     default: 'mock_{{ snakeCase name }}',
   },
   prop: {
-    default: '{{ camelCase props }}',
+    default: '{{ camelCase props }} {{ -prop_type }}',
     match: [
       { key: '#', value: '{{ properCase props }}Props' },
     ],
@@ -40,8 +49,8 @@ export const mock_ = {
   prop_type: {
     default: '{{ camelCase props }}',
     match: [
-      { key: '#', value: '{{ properCase props }}Props' },
       { key: '_', value: '{{}}?' },
+      { key: '#', value: '{{ properCase props }}Props' },
     ],
     spaces: {
       start: '\n\t{{}}: any\n',
@@ -56,7 +65,7 @@ export const mock_ = {
       {
         key: '#',
         value:
-          '{{ properCase props }}: {{ $export_and_impot_mock }}',
+          '{{ properCase props }}: {{ -export_and_import_mock }}',
       },
     ],
     spaces: {
@@ -71,7 +80,8 @@ export const mock_ = {
     match: [
       {
         key: '#',
-        value: '{{ properCase bola }}: {{ $mock }}',
+        value:
+          '{{ properCase bola }}: {{ -export_and_import_mock }}',
       },
     ],
     spaces: {

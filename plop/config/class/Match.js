@@ -16,12 +16,14 @@ export class Match {
     variable,
     modifier,
     isIncrement,
+    molde,
   }) {
     this.match[key] = {
       isIncrement,
       match,
       variable,
       modifier,
+      molde,
     }
   }
 
@@ -30,6 +32,7 @@ export class Match {
     _default = {
       value: '',
       modifier: '',
+      molde: '',
     },
     variables,
   ) {
@@ -45,17 +48,19 @@ export class Match {
             )
             return {
               modifier: [
-                resolve.modifier,
                 ...prev.modifier,
+                resolve.modifier,
               ],
-              value: [resolve.value, ...prev.value],
+              value: [...prev.value, resolve.value],
               increment: [
-                resolve.increment,
                 ...prev.increment,
+                resolve.increment,
               ],
+              molde: [...prev.molde, resolve.molde],
             }
           },
           {
+            molde: [],
             modifier: [],
             value: [],
             increment: [],
@@ -68,26 +73,30 @@ export class Match {
     const resolve = {
       modifier: _default.modifier,
       value: _default.value,
+      molde: _default.molde,
       increment: false,
     }
     this.match[key] &&
       this.match[key].match.map((match, match_i) => {
-        if (this.match[key].isIncrement) {
-          const _match_ = input.match(match)
-          if (this.match[key].modifier[match_i]) {
-            resolve.modifier = _match_
-              ? this.match[key].modifier[match_i]
-              : _default.modifier
-          } else {
-            resolve.modifier = _default.modifier
-          }
-          if (this.match[key].variable[match_i]) {
-            resolve.value = _match_
-              ? this.match[key].variable[match_i]
-              : _default.value
-          } else {
-            resolve.increment = this.match[key].isIncrement
-          }
+        const _match_ = input.match(match)
+        if (
+          this.match[key].isIncrement[match_i] &&
+          _match_
+        ) {
+          resolve.increment =
+            this.match[key].isIncrement[match_i]
+        } else {
+          this.match[key].modifier[match_i] &&
+            _match_ &&
+            (resolve.modifier =
+              this.match[key].modifier[match_i])
+          this.match[key].variable[match_i] &&
+            _match_ &&
+            (resolve.value =
+              this.match[key].variable[match_i])
+          this.match[key].molde[match_i] &&
+            _match_ &&
+            (resolve.molde = this.match[key].molde[match_i])
         }
       })
     return resolve

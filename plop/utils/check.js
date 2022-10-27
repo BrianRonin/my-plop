@@ -5,16 +5,23 @@ export function _check(
     resolve: ['camelCase'],
   },
   ifNoMatch = 'no match',
-  __regex,
+  __regex = {
+    regex: false,
+    flags: '',
+  },
 ) {
-  const __match = __regex
-    ? (input, match) => {
+  let regex
+  const __match = __regex.regex
+    ? (input, match, isReplace) => {
         // console.log(
         //   JSON.stringify(match) + '<- match input-> ',
         // )
         // console.log(JSON.stringify(input))
-        const _regex = __regex.replace('__match__', match)
-        const regex = new RegExp(_regex)
+        const _regex = __regex.regex.replace(
+          '__match__',
+          match,
+        )
+        regex = new RegExp(_regex, __regex.flags)
         return input.match(regex)
       }
     : false
@@ -39,14 +46,48 @@ export function _check(
         Resolve(
           () => {
             output[_key] = []
-            __match
+            typeof _match.resolve === 'function'
+              ? output.push(
+                  _match.resolve({
+                    isMany: true,
+                    value: obj[_key][__index],
+                    regex,
+                    match: _match.match[index],
+                    isMatch: __match
+                      ? __match(
+                          obj[_key][__index],
+                          match,
+                        ) &&
+                        output.push(_match.resolve[index])
+                      : obj[_key][__index].match(match) &&
+                        output.push(_match.resolve[index]),
+                    key: _key,
+                    index: index,
+                  }),
+                )
+              : __match
               ? __match(obj[_key][__index], match) &&
                 output.push(_match.resolve[index])
               : obj[_key][__index].match(match) &&
                 output.push(_match.resolve[index])
           },
           () => {
-            __match
+            typeof _match.resolve === 'function'
+              ? output.push(
+                  _match.resolve({
+                    isMany: false,
+                    value: obj[_key],
+                    regex,
+                    match: _match.match[index],
+                    isMatch: __match
+                      ? __match(obj[_key], match) &&
+                        output.push(_match.resolve[index])
+                      : obj[_key].match(match) &&
+                        output.push(_match.resolve[index]),
+                    key: _key,
+                  }),
+                )
+              : __match
               ? __match(obj[_key], match) &&
                 output.push(_match.resolve[index])
               : obj[_key].match(match) &&
@@ -69,7 +110,7 @@ export function _check(
           }
         } else {
           if (isMany) {
-            resolve[_key]
+            resolve[_key] = []
             resolve[_key].push(output[0])
           } else {
             resolve[_key] = output[0]
@@ -77,9 +118,14 @@ export function _check(
         }
       } else {
         if (isMany) {
-          resolve[_key].push(ifNoMatch)
+          resolve[_key].push(
+            ifNoMatch === 'it'
+              ? obj[_key][__index]
+              : ifNoMatch,
+          )
         } else {
-          resolve[_key] = ifNoMatch
+          resolve[_key] =
+            ifNoMatch === 'it' ? obj[_key] : ifNoMatch
         }
       }
     }

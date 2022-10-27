@@ -1,4 +1,4 @@
-function spaces(
+export const handle_spaces = (
   index,
   maxLength,
   array,
@@ -6,7 +6,7 @@ function spaces(
   between,
   end,
   onlyOne,
-) {
+) => {
   return index === 0
     ? maxLength > 0
       ? array.push(start)

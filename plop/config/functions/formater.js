@@ -1,37 +1,75 @@
 import { case_modifiers } from '../../utils/case_modifiers.js'
-export const formater_plop = (_molde, variables) => {
+import { _check } from '../../utils/check.js'
+import { handle_spaces } from './handle_spaces.js'
+let obj
+export const formater_plop = (_molde, variables, _obj) => {
   let output = {}
+  obj = _obj
   _molde.forEach((molde) => {
     Object.keys(molde).forEach((key, index) => {
       const isMany = Array.isArray(molde[key].value)
-      return isMany ? format() : 'fsfsf'
+      output = isMany
+        ? format(molde, key, variables, true)
+        : format(molde, key, variables)
     })
+    // console.log(output)
   })
-  return output
 }
 
-const format = (molde, key, variables) => {
-  let output
-  molde[key].value.reduce((prev, value, index) => {
-    const input = variables.inputClean(value)
-    output[key] = input.reduce((prev, input, index) => {
-      const hasIncrement = molde[key].increment[index]
-      let resolve = input.replace(
-        /{{[^$.*]*}}/gi,
-        case_modifiers[molde[key].modifier[index]](input),
-      )
-      console.log(resolve)
-      if (hasIncrement) {
-        resolve = molde[key].increment[index].replace(
-          '{{}}',
-          resolve,
+const format = (molde, key, variables, isMany = false) => {
+  const hasSpaces = obj[key].spaces
+  const output = []
+  const resolve = isMany
+    ? molde[key].value.reduce((prev, input, index) => {
+        let resolve = ''
+        input = variables.inputClean(input)[index]
+        const hasIncrement = molde[key].increment[index]
+        const hasHooks =
+          molde[key].molde[index].match(/{{.*[$.*].*}}/g)
+        resolve = format_modifier(
+          molde[key].molde[index],
+          input,
+          molde[key].modifier[index],
         )
-      }
-      return [...prev, resolve]
-    }, [])
-  })
+        if (hasIncrement) {
+          resolve = hasIncrement.replace('{{}}', resolve)
+        }
+        hasSpaces &&
+          handle_spaces(
+            index,
+            molde[key].value.length,
+            output,
+            obj[key].spaces.start.replace('{{}}', resolve),
+            obj[key].spaces.between.replace(
+              '{{}}',
+              resolve,
+            ),
+            obj[key].spaces.end.replace('{{}}', resolve),
+            obj[key].spaces.onlyOne.replace(
+              '{{}}',
+              resolve,
+            ),
+          )
+
+        return [...prev, resolve]
+      }, [])
+    : format_modifier(
+        molde[key].molde,
+        variables.inputClean(molde[key].value),
+        molde[key].modifier,
+      )
+  hasSpaces && isMany
+    ? variables.addhooks(key, output)
+    : variables.addhooks(key, resolve)
+  return hasSpaces && isMany ? output : resolve
 }
 
+const format_modifier = (molde, input, modifier) => {
+  return molde.replace(
+    /{{[^-.*]*}}/g,
+    case_modifiers[modifier](input),
+  )
+}
 // {
 //     props: ['start', 'beetwen', 'end'],
 //     propsComponenet: ['start', 'beetwen', 'end'],

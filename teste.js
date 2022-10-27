@@ -1,5 +1,7 @@
-const x = [false, 'teste2']
+const y =
+  '\tPropOpcionalEComponent: {{ -export_and_impot_mock }}: any\n\t'
 function teste(input) {
-  console.log(x[1] ? 'sim' : 'nao')
+  let i = 'export_and_impot_mock'
+  return y.replace(`{{ -${i} }}`, 'sei la')
 }
-teste()
+console.log(teste())

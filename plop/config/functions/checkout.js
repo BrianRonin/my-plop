@@ -3,16 +3,15 @@ import { case_modifiers } from '../../utils/case_modifiers.js'
 import { _check } from '../../utils/check.js'
 
 let keys_of_variables
-let keys_and_isMany
 
 export const checkout = (
-  check,
-  obj,
-  key,
+  check = '',
+  obj = {},
+  key = '',
   variables,
-  isMatch,
+  isMatch = false,
 ) => {
-  keys_of_variables = Object.keys(variables.variables)
+  keys_of_variables = variables.keys
   const resolve = isMatch
     ? obj[key][check].reduce(
         (p, c, i) => {
@@ -23,6 +22,10 @@ export const checkout = (
             false,
           )
           return {
+            moldes: [
+              ...p.moldes,
+              c.value.match('{{}}') ? false : c.value,
+            ],
             keys: [...p.keys, c.key],
             isIncrement: [
               ...p.isIncrement,
@@ -39,37 +42,50 @@ export const checkout = (
           }
         },
         {
+          moldes: [],
           keys: [],
           isIncrement: [],
           _variables: [],
           _modifiers: [],
         },
       )
-    : _check_(
-        { [key]: obj[key][check] },
-        default_if_there_are_no_modifiers,
-      )
+    : (() => {
+        const { _variables, _modifiers } = _check_(
+          { [key]: obj[key][check] },
+          default_if_there_are_no_modifiers,
+        )
+        return {
+          default_variable: Object.values(_variables)[0],
+          default_modifier: Object.values(_modifiers)[0],
+        }
+      })()
+
   return resolve
 }
 
 const _check_ = (obj, _default_) => {
-  let _variables = _check(
+  const _variables = _check(
     obj,
     {
       match: keys_of_variables,
       resolve: keys_of_variables,
     },
     false,
-    '{{.* __match__ .*}}',
+    {
+      regex: '{{.* __match__ .*}}',
+    },
   )
-  let _modifiers = _check(
+  const _modifiers = _check(
     obj,
     {
       match: case_modifiers.options,
       resolve: case_modifiers.options,
     },
     _default_,
-    '{{.* __match__ .*}}',
+    {
+      regex: '{{.* __match__ .*}}',
+    },
   )
+
   return { _variables, _modifiers }
 }

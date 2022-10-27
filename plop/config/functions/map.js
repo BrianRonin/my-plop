@@ -5,23 +5,21 @@ export const map_plop = (obj, variables, match) => {
   const output = []
   Object.keys(obj).forEach((key) => {
     if (key !== 'variables') {
-      const { _var, hasMatch, hasSpaces, _default } =
+      const { _var, hasMatch, hasSpaces, default_molde } =
         config(obj[key], key)
-      const { _variables, _modifiers } = checkout(
-        'default',
-        obj,
-        key,
-        variables,
-      )
+      const { default_variable, default_modifier } =
+        checkout('default', obj, key, variables)
       if (hasMatch) {
         const {
           keys: M_keys,
           _variables: M_variables,
           _modifiers: M_modifiers,
+          moldes: M_moldes,
           isIncrement,
         } = checkout('match', obj, key, variables, true)
         match.addmatch({
           key,
+          molde: M_moldes,
           match: M_keys,
           variable: M_variables,
           modifier: M_modifiers,
@@ -29,14 +27,19 @@ export const map_plop = (obj, variables, match) => {
         })
       }
       output.push({
-        [key]: match.Match(
-          key,
-          {
-            value: Object.values(_variables)[0],
-            modifier: Object.values(_modifiers)[0],
-          },
-          variables,
-        ),
+        [key]: {
+          hasSpaces: hasSpaces,
+          ...match.Match(
+            key,
+            {
+              //* default if no match
+              value: default_variable,
+              modifier: default_modifier,
+              molde: default_molde,
+            },
+            variables,
+          ),
+        },
       })
     }
   })
