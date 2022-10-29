@@ -24,8 +24,8 @@ export const case_modifiers = {
       )
     }
     text = text
-      .replace(/[^a-zA-Z0-9$_\-\s.]/g, ``)
-      .replace(/^[0-9_\-\s.]+/, ``)
+      .replace(/[^a-zA-Z0-9$_\-\s.]/g, '')
+      .replace(/^[0-9_\-\s.]+/, '')
     return camelize_(text)
   },
   snakeCase: (str) =>
@@ -50,13 +50,13 @@ export const case_modifiers = {
   options: [
     'camelCase',
     'snakeCase',
-    'dashCase',
-    'dotCase',
-    'pathCase',
+    // 'dashCase',
+    // 'dotCase',
+    // 'pathCase',
     'properCase',
-    'lowerCase',
-    'sentenceCase',
-    'constantCase',
-    'titleCase',
+    // 'lowerCase',
+    // 'sentenceCase',
+    // 'constantCase',
+    // 'titleCase',
   ],
 }
