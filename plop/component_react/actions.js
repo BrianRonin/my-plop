@@ -1,4 +1,4 @@
-import { TransformComponent } from './ts/template.js'
+import { TransformComponent } from './template.js'
 
 export const transformComponent = new TransformComponent()
 

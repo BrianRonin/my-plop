@@ -1,7 +1,7 @@
-import { build_my_plop } from '../../config/formater.js'
-import { transformComponent } from '../actions.js'
-import { plop_config_components } from '../settings.js'
-import { transformComponent_index } from './transform/index.js'
+import { build_my_plop } from '../config/formater.js'
+import { transformComponent } from './actions.js'
+import { plop_config_components } from './settings.js'
+import { transformComponent_index } from './ts/transform/index.js'
 
 export class TransformComponent {
   var = {
