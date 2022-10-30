@@ -1,4 +1,4 @@
-import { transformComponent } from './actions.js'
+import { TransformComponent } from './template.js'
 
 export const prompts_components = [
   {
@@ -6,7 +6,7 @@ export const prompts_components = [
     name: 'name',
     message: 'qual o nome do seu componente?',
     filter: (input) => {
-      transformComponent.var.name = input
+      TransformComponent.var.name = input
       return input
     },
   },
@@ -17,8 +17,8 @@ export const prompts_components = [
     filter: (input, answers) => {
       if (input) {
         const path = input.replace(' ', '/')
-        transformComponent.var.hasGroup = true
-        transformComponent.var.group = path
+        TransformComponent.var.hasGroup = true
+        TransformComponent.var.group = path
         answers.titleStorybook =
           'components/' + path + '/' + answers.name
         return input
@@ -49,21 +49,21 @@ export const prompts_components = [
     ],
     filter: (x, r) => {
       x.indexOf('Mock') > -1 &&
-        (transformComponent.var.hasMock = true) &&
+        (TransformComponent.var.hasMock = true) &&
         (r.hasMock = 'true')
       x.indexOf('Props') > -1 &&
-        (transformComponent.var.hasProps = true) &&
+        (TransformComponent.var.hasProps = true) &&
         (r.hasProps = 'true')
       if (x.indexOf('Test') > -1) {
-        transformComponent.var.hasTest = true
+        TransformComponent.var.hasTest = true
         r.hasTest = 'true'
       }
       if (x.indexOf('Storybook') > -1) {
-        transformComponent.var.hasStorybook = true
+        TransformComponent.var.hasStorybook = true
         r.hasStorybook = 'true'
       }
       if (x.indexOf('Chield') > -1)
-        transformComponent.var.hasChield = true
+        TransformComponent.var.hasChield = true
       if (x.indexOf('Typescript') > -1) {
         r.isTs = 'ts'
       } else {
@@ -80,8 +80,8 @@ export const prompts_components = [
     name: 'props',
     filter: (input, r) => {
       input.match('#') &&
-        (transformComponent.var.hasPropComponent = true)
-      transformComponent.var.props = input
+        (TransformComponent.var.hasPropComponent = true)
+      TransformComponent.var.props = input
       return input
     },
   },

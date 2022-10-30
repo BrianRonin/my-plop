@@ -1,4 +1,4 @@
-export const handle_spaces_legacy = (
+export const handle_spaces = (
   index,
   maxLength,
   array,
@@ -9,9 +9,9 @@ export const handle_spaces_legacy = (
 ) => {
   return index === 0
     ? maxLength > 0
-      ? array.push(start)
-      : array.push(onlyOne)
+      ? start
+      : onlyOne
     : maxLength === index + 1
-    ? array.push(end)
-    : array.push(between)
+    ? end
+    : between
 }

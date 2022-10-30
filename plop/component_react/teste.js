@@ -1,8 +1,2 @@
-let x = {
-  nome: 'brian',
-  idade: 20,
-}
-console.log({
-  ...x,
-  nome: 'julia',
-})
+const path = 'faefa_#..faefaf'
+console.log(path.match(/(\.*\/*)/g))

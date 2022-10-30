@@ -1,9 +1,14 @@
-export const transformComponent_index = (x, transform) => {
-  const { prop_type, name_type, prop } = transform.start
+export const transformComponent_index = (x, t) => {
+  let {
+    prop_type,
+    name_type,
+    prop,
+    import_props_component,
+  } = t.start
   // *** modify PROPS TYPES
   let doc = x.replace(
-    /\?\?propsType\?\?/,
-    transform.state(
+    /__propsType__/,
+    t.state(
       '\n\t' + 'children: React.ReactNode',
       prop_type,
       '\n\t' + 'children: React.ReactNode' + prop_type,
@@ -12,8 +17,8 @@ export const transformComponent_index = (x, transform) => {
   )
   // *** modify ARG
   doc = doc.replace(
-    /\?\?props\?\?/,
-    transform.state(
+    /__props__/,
+    t.state(
       '{ children }: ' + name_type,
       '{ ' + prop + ' }: ' + name_type,
       '{ children, ' + prop + ' }: ' + name_type,
@@ -22,8 +27,8 @@ export const transformComponent_index = (x, transform) => {
   )
   // *** modfy RETURN
   doc = doc.replace(
-    /\?\?return\?\?/,
-    transform.state(
+    /__return__/,
+    t.state(
       '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
       '(\n\t\t<S.Main>\n\t\t\t//\n\t\t</S.Main>\n\t)',
       '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
@@ -33,8 +38,9 @@ export const transformComponent_index = (x, transform) => {
 
   // *** ??importComponentAndType??
   doc = doc.replace(
-    /\?\?importComponentAndType\?\?/,
-    transform.var.hasPropComponent ? '\nimport {  }' : '',
+    /__importComponentAndType__/,
+    import_props_component,
   )
+
   return doc
 }

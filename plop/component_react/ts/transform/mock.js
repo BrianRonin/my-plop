@@ -1,37 +1,19 @@
-export const transform_component_mock = () => {
-  // *** modfy IMPORT
-  doc = doc.replace(
-    /\?\?importComponentAndType\?\?/,
-    isEmptyObject(propsComponent)
-      ? ''
-      : (() => {
-          for (const [k, { camelCase }] of Object.entries(
-            propsComponent,
-          )) {
-            return `\nimport { ${camelCase}Props, ${propperCase} } from "../${snakeCase}/${snakeCase}";`
-          }
-        })(),
-  )
+export const transformComponent_mock = (x, t) => {
+  const { mock, import_mock_prop_component } = t.start
+  let doc = x
   // *** modfy MOCK
   doc = doc.replace(
-    /\?\?mock\?\?/,
-    state(
+    /__importMock__/,
+    import_mock_prop_component,
+  )
+  doc = doc.replace(
+    /__mock__/,
+    t.state(
       "\n\tchildren: ':D',",
       mock,
       "\n\tchildren: ':D'," + mock,
       '\n\t//',
     ),
   )
-  doc = doc.replace(
-    /\?\?importMock\?\?/,
-    isEmptyObject(propsComponent)
-      ? ''
-      : (() => {
-          for (const [k, { snakeCase }] of Object.entries(
-            propsComponent,
-          )) {
-            return `\nimport { mock_${snakeCase} } from "../${snakeCase}/M.${snakeCase}";`
-          }
-        })(),
-  )
+  return doc
 }

@@ -13,12 +13,26 @@
 // ************* COMPONENTS ****************** //
 
 export const plop_config_components = (var_) => {
+  const prop_component_snakeCase = []
   return {
+    custom: {
+      prop_component_snakeCase: prop_component_snakeCase,
+    },
     input: {
       name: var_.name,
       props: var_.props,
     },
     config: {
+      // *** general
+      proper_case_name: {
+        input: [var_.name, 'name'],
+        default: '{{ properCase name }}',
+      },
+      snake_case_name: {
+        input: [var_.name, 'name'],
+        default: '{{ snakeCase name }}',
+      },
+      // *** index
       name_type: {
         input: [var_.name, 'name'],
         default: '{{ camelCase name }}Props',
@@ -53,10 +67,12 @@ export const plop_config_components = (var_) => {
         match: [
           {
             key: '_',
-            value: (x) => {
-              return x.match(/\?/g)
-                ? x
-                : x.replace(':', '?:')
+            stages: {
+              stage_3: (x) => {
+                return x.match(/\?/g)
+                  ? x
+                  : x.replace(':', '?:')
+              },
             },
           },
           {
@@ -74,7 +90,7 @@ export const plop_config_components = (var_) => {
       },
       prop_mock: {
         input: [var_.props.split(','), 'props'],
-        default: '// {{ camelCase props }}',
+        default: '// {{ camelCase props }}: any',
         match: [
           {
             key: '#',
@@ -83,10 +99,104 @@ export const plop_config_components = (var_) => {
           },
         ],
         spaces: {
-          start: '\n\t{{}}: any\n',
-          between: '\t{{}}: any\n',
-          end: '\t{{}}: any\n\t',
-          onlyOne: '\t{{}}: any\n\t',
+          start: '\n\t{{}}\n',
+          between: '\t{{}}\n',
+          end: '\t{{}}\n\t',
+          onlyOne: '\t{{}}\n\t',
+        },
+      },
+      import_props_component: {
+        input: [var_.props.split(','), 'props'],
+        match: [
+          {
+            key: '##',
+            value:
+              "import { {{ properCase props }}, {{ camelCase props }}Props } from '../{{ snakeCase props }}/{{ snakeCase props }}'",
+          },
+        ],
+        spaces: {
+          start: '\n{{}} \n',
+          between: '{{}} \n',
+          end: '{{}}',
+          onlyOne: '{{}}',
+        },
+      },
+      // *** styles
+      prop_component: {
+        input: [var_.props.split(','), 'props'],
+        match: [
+          {
+            key: '#',
+            value: "'{{ properCase props }}Props'",
+          },
+        ],
+        spaces: {
+          start: ', {{}}, ',
+          between: '{{}}, ',
+          end: '{{}} ',
+          onlyOne: ', {{}}',
+        },
+      },
+      type_styled: {
+        input: [var_.name, 'name'],
+        default:
+          "type S_{{ camelCase name }}Props = Exclude<Pick<{{ camelCase name }}Props, 'children'{{ ...prop_component }}>, {{ camelCase name }}Props>",
+        spaces: {
+          start: '\n{{}}',
+          between: '{{}}',
+          end: '{{}}',
+          onlyOne: '{{}}',
+        },
+      },
+      // *** mock
+      import_mock_prop_component: {
+        input: [var_.props.split(','), 'props'],
+        match: [
+          {
+            key: '##',
+            value:
+              "import { mock_{{ snakeCase props }} } from '../{{ snakeCase props }}/{{ snakeCase props }}'",
+          },
+        ],
+        spaces: {
+          start: '\n{{}} \n',
+          between: '{{}} \n',
+          end: '{{}}',
+          onlyOne: '\n{{}} \n',
+        },
+      },
+      mock: {
+        input: [var_.props.split(','), 'props'],
+        default: '// {{ camelCase props }}',
+        match: [
+          {
+            key: '#',
+            value:
+              '// {{ properCase props }}Props: mock_{{ snakeCase props }}',
+          },
+          {
+            key: '##',
+            value:
+              '{{ properCase props }}Props: mock_{{ snakeCase props }}',
+          },
+        ],
+        spaces: {
+          start: '\n\t{{}}, \n',
+          between: '\t{{}}, \n',
+          end: '\t{{}},',
+          onlyOne: '\n\t{{}} \n,',
+        },
+      },
+      // *** stories && test
+      import_mock: {
+        input: [var_.name, 'name'],
+        default:
+          "import { mock_{{ snakeCase name }} } from './M.{{ snakeCase name }}'",
+        spaces: {
+          start: '{{}} \n',
+          between: '{{}} \n',
+          end: '{{}}',
+          onlyOne: '{{}} \n',
         },
       },
     },

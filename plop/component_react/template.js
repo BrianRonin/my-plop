@@ -1,10 +1,13 @@
 import { build_my_plop } from '../config/formater.js'
-import { transformComponent } from './actions.js'
 import { plop_config_components } from './settings.js'
 import { transformComponent_index } from './ts/transform/index.js'
+import { transformComponent_mock } from './ts/transform/mock.js'
+import { transformComponent_stories } from './ts/transform/stories.js'
+import { transformComponent_styles } from './ts/transform/styles.js'
+import { transformComponent_test } from './ts/transform/test.js'
 
 export class TransformComponent {
-  var = {
+  static var = {
     hasChield: false,
     hasProps: false,
     hasMock: false,
@@ -17,11 +20,19 @@ export class TransformComponent {
     props: false,
     path: false,
   }
-  get start() {
-    return build_my_plop(plop_config_components(this.var))
+  static get start() {
+    let resolve
+    try {
+      resolve = build_my_plop(
+        plop_config_components(this.var),
+      )
+    } catch (e) {
+      resolve = e
+    }
+    return resolve
   }
 
-  state(onlyChield, onlyArg, both, anything) {
+  static state(onlyChield, onlyArg, both, anything) {
     const isFunc = (x) =>
       typeof x === 'function' ? x() : x
     return this.var.hasChield || this.var.props
@@ -33,23 +44,29 @@ export class TransformComponent {
       : isFunc(anything)
   }
 
-  index(doc) {
-    return transformComponent_index(doc, transformComponent)
+  static index(doc) {
+    return transformComponent_index(doc, TransformComponent)
   }
 
-  styles(x) {
-    return x
+  static styles(doc) {
+    return transformComponent_styles(
+      doc,
+      TransformComponent,
+    )
   }
 
-  test(x) {
-    return x
+  static test(doc) {
+    return transformComponent_test(doc, TransformComponent)
   }
 
-  stories(x) {
-    return x
+  static stories(doc) {
+    return transformComponent_stories(
+      doc,
+      TransformComponent,
+    )
   }
 
-  mock(x) {
-    return x
+  static mock(doc) {
+    return transformComponent_mock(doc, TransformComponent)
   }
 }
