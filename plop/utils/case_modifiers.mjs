@@ -1,19 +1,19 @@
-export class CaseModifiers {
-  constructor(str) {
-    this.str = str
-  }
-  get snakeCase() {
-    return case_modifiers['snakeCase'](this.str)
-  }
-  get properCase() {
-    return case_modifiers['properCase'](this.str)
-  }
-  get camelCase() {
-    return case_modifiers['camelCase'](this.str)
-  }
-}
+// export class CaseModifiers {
+//   constructor(str) {
+//     this.str = str
+//   }
+//   get snakeCase() {
+//     return case_modifiers['snakeCase'](this.str)
+//   }
+//   get properCase() {
+//     return case_modifiers['properCase'](this.str)
+//   }
+//   get camelCase() {
+//     return case_modifiers['camelCase'](this.str)
+//   }
+// }
 
-export const case_modifiers = {
+export default {
   camelCase: (text) => {
     function camelize_(text) {
       text = text.replace(/[-_\s.]+(.)?/g, (_, c) =>
@@ -36,6 +36,14 @@ export const case_modifiers = {
       )
       .map((x) => x.toLowerCase())
       .join('_'),
+  constantCase: (str) =>
+    str &&
+    str
+      .match(
+        /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g,
+      )
+      .map((x) => x.toUpperCase())
+      .join('_'),
   properCase: (string) => {
     return `${string}`
       .toLowerCase()
@@ -56,7 +64,7 @@ export const case_modifiers = {
     'properCase',
     // 'lowerCase',
     // 'sentenceCase',
-    // 'constantCase',
+    'constantCase',
     // 'titleCase',
   ],
 }

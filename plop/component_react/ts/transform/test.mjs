@@ -1,4 +1,4 @@
-export const transformComponent_test = (x, t) => {
+export default (x, t) => {
   const { import_mock, snake_case_name } = t.start
   let doc = x
   doc = doc.replace(

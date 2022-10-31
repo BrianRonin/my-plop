@@ -1,4 +1,8 @@
-export function cleanInput(input, regex_start, regex_end) {
+export default function cleanInput(
+  input,
+  regex_start,
+  regex_end,
+) {
   let resolve = input
   let start_indice
   let end_indice

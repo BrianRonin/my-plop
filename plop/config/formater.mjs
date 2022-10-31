@@ -1,10 +1,10 @@
-import { case_modifiers } from '../utils/case_modifiers.js'
-import { cleanInput } from '../utils/clean_input.js'
-import { format_hooks } from './format_hooks.js'
-import { plop_config_components } from '../component_react/settings.js'
-import { handle_spaces } from '../utils/handle_spaces.js'
+import case_modifiers from '../utils/case_modifiers.mjs'
+import cleanInput from '../utils/clean_input.mjs'
+import format_hooks from './format_hooks.mjs'
+import plop_config_components from '../component_react/settings.mjs'
+import handle_spaces from '../utils/handle_spaces.mjs'
 
-export const build_my_plop = (obj) => {
+export default function build_my_plop(obj) {
   const single_inputs = {}
   Object.keys(obj.input).forEach((input) => {
     if (!Array.isArray(obj.input[input])) {

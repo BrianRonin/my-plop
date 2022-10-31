@@ -1,4 +1,4 @@
-import { TransformComponent } from './template.js'
+import TransformComponent from './template.mjs'
 
 const getPaths_component = (whatIs, fileName, skip) => {
   return {
@@ -8,16 +8,16 @@ const getPaths_component = (whatIs, fileName, skip) => {
       whatIs +
       '.hbs',
     path: '{{ group }}'
-      ? 'src/components/{{ properCase group }}/{{ snakeCase name }}/' +
+      ? 'src/components/{{ constantCase group }}/{{ snakeCase name }}/' +
         fileName
-      : './src/components/{{ properCase group }}/' +
+      : './src/components/{{ constantCase group }}/' +
         fileName, //diretorio destiono
     transform: (doc) => TransformComponent[whatIs](doc),
     skip: () => (skip ? false : '-SKIP ' + whatIs),
   }
 }
 
-export const plop_actions_component = [
+export default [
   {
     ...getPaths_component(
       'stories',

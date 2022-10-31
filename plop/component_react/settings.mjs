@@ -12,7 +12,7 @@
 
 // ************* COMPONENTS ****************** //
 
-export const plop_config_components = (var_) => {
+export default (var_) => {
   const prop_component_snakeCase = []
   return {
     custom: {

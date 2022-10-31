@@ -1,4 +1,4 @@
-export const transformComponent_mock = (x, t) => {
+export default (x, t) => {
   const { mock, import_mock_prop_component } = t.start
   let doc = x
   // *** modfy MOCK

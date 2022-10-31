@@ -1,5 +1,5 @@
-import { plop_actions_component } from './plop/component_react/actions.js'
-import { prompts_components } from './plop/component_react/prompts.js'
+import plop_actions_component from './plop/component_react/actions.mjs'
+import prompts_components from './plop/component_react/prompts.mjs'
 
 export default function (
   /** @type {import('plop').NodePlopAPI} */

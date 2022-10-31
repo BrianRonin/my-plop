@@ -1,4 +1,4 @@
-export function format_hooks(obj) {
+export default function format_hooks(obj) {
   const output = { ...obj }
   const keys = Object.keys(output)
   Object.keys(output).forEach((k) => {

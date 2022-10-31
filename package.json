@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "my_plop",
   "version": "1.0.0",
   "main": "index.js",

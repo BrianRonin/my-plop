@@ -1,4 +1,4 @@
-export const transformComponent_index = (x, t) => {
+export default (x, t) => {
   let {
     prop_type,
     name_type,

@@ -1,4 +1,4 @@
-export const handle_spaces = (
+export default (
   index,
   maxLength,
   array,

@@ -1,12 +1,12 @@
-import { build_my_plop } from '../config/formater.js'
-import { plop_config_components } from './settings.js'
-import { transformComponent_index } from './ts/transform/index.js'
-import { transformComponent_mock } from './ts/transform/mock.js'
-import { transformComponent_stories } from './ts/transform/stories.js'
-import { transformComponent_styles } from './ts/transform/styles.js'
-import { transformComponent_test } from './ts/transform/test.js'
+import build_my_plop from '../config/formater.mjs'
+import plop_config_components from './settings.mjs'
+import transformComponent_index from './ts/transform/index.mjs'
+import transformComponent_mock from './ts/transform/mock.mjs'
+import transformComponent_stories from './ts/transform/stories.mjs'
+import transformComponent_styles from './ts/transform/styles.mjs'
+import transformComponent_test from './ts/transform/test.mjs'
 
-export class TransformComponent {
+export default class TransformComponent {
   static var = {
     hasChield: false,
     hasProps: false,

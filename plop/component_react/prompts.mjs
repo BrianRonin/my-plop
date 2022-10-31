@@ -1,6 +1,6 @@
-import { TransformComponent } from './template.js'
+import TransformComponent from './template.mjs'
 
-export const prompts_components = [
+export default [
   {
     type: 'input',
     name: 'name',
