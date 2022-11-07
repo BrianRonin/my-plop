@@ -15,6 +15,7 @@ export default class TransformComponent {
     hasGroup: false,
     hasStorybook: false,
     hasPropComponent: false,
+    hasTypeStyle: false,
     group: false,
     name: false,
     props: false,

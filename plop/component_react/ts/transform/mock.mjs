@@ -1,5 +1,5 @@
 export default (x, t) => {
-  const { mock, import_mock_prop_component } = t.start
+  const { prop_mock, import_mock_prop_component } = t.start
   let doc = x
   // *** modfy MOCK
   doc = doc.replace(
@@ -7,11 +7,11 @@ export default (x, t) => {
     import_mock_prop_component,
   )
   doc = doc.replace(
-    /__mock__/,
+    /__prop_mock__/,
     t.state(
       "\n\tchildren: ':D',",
-      mock,
-      "\n\tchildren: ':D'," + mock,
+      prop_mock,
+      "\n\tchildren: ':D'," + prop_mock,
       '\n\t//',
     ),
   )

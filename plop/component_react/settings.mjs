@@ -1,4 +1,6 @@
-// ! only support camelCase, snakeCase, properCase
+import Cases from '../utils/cases.mjs'
+import file_name from './file_name.mjs'
+// ! only support camelCase, snakeCase, properCase, constantCase
 //*  camelCase: changeFormatToThis
 //*  snakeCase: change_format_to_this
 //*  dashCase: change-format-to-this
@@ -14,6 +16,14 @@
 
 export default (var_) => {
   const prop_component_snakeCase = []
+  const c = Cases('__', {
+    component: '{{ properCase __ }}',
+    type_component: '{{ camelCase __ }}Props',
+    prop: '{{ camelCase __ }}',
+    prop_component: '{{ properCase __ }}Props',
+    mock: 'mock_{{ snakeCase __ }}',
+    type_style: 'S_{{ ...prop }}',
+  })
   return {
     custom: {
       prop_component_snakeCase: prop_component_snakeCase,
@@ -23,15 +33,7 @@ export default (var_) => {
       props: var_.props,
     },
     config: {
-      // *** general
-      proper_case_name: {
-        input: [var_.name, 'name'],
-        default: '{{ properCase name }}',
-      },
-      snake_case_name: {
-        input: [var_.name, 'name'],
-        default: '{{ snakeCase name }}',
-      },
+      // *** general cases
       // *** index
       name_type: {
         input: [var_.name, 'name'],
@@ -43,27 +45,27 @@ export default (var_) => {
       },
       export_and_import_mock: {
         input: [var_.name, 'name'],
-        default: 'mock_{{ snakeCase name }}',
+        default: c.mock('name'),
       },
       prop: {
         input: [var_.props.split(','), 'props'],
-        default: '{{ camelCase props }}',
+        default: c.prop('props'),
         match: [
           {
             key: '#',
-            value: '{{ properCase props }}Props',
+            value: c.prop_component('props'),
           },
         ],
         spaces: {
           start: '{{}}, ',
           between: '{{}}, ',
           end: '{{}}',
-          onlyOne: '{{}}t',
+          onlyOne: '{{}}',
         },
       },
       prop_type: {
         input: [var_.props.split(','), 'props'],
-        default: '{{ camelCase props }}: any',
+        default: c.prop('props') + ': any',
         match: [
           {
             key: '_',
@@ -77,57 +79,48 @@ export default (var_) => {
           },
           {
             key: '#',
-            value:
-              '{{ properCase props }}Props: {{ camelCase props }}Props',
+            value: `${c.prop_component(
+              'props',
+            )}: ${c.type_component('props')}`,
           },
         ],
         spaces: {
-          start: '\n\t{{}}\n',
+          start: '{\n\t{{}}\n',
           between: '\t{{}}\n',
-          end: '\t{{}}\n\t',
-          onlyOne: '\t{{}}\n\t',
-        },
-      },
-      prop_mock: {
-        input: [var_.props.split(','), 'props'],
-        default: '// {{ camelCase props }}: any',
-        match: [
-          {
-            key: '#',
-            value:
-              '{{ properCase props }}: {{ ...export_and_import_mock }}',
-          },
-        ],
-        spaces: {
-          start: '\n\t{{}}\n',
-          between: '\t{{}}\n',
-          end: '\t{{}}\n\t',
-          onlyOne: '\t{{}}\n\t',
+          end: '\t{{}}\n}',
+          onlyOne: '{ {{}} }',
         },
       },
       import_props_component: {
         input: [var_.props.split(','), 'props'],
         match: [
           {
-            key: '##',
-            value:
-              "import { {{ properCase props }}, {{ camelCase props }}Props } from '../{{ snakeCase props }}/{{ snakeCase props }}'",
+            key: /##/,
+            value: `import { ${c.type_component(
+              'props',
+            )} } from '../${file_name.folder(
+              'props',
+            )}/${file_name.folder('props')}'`,
           },
         ],
         spaces: {
-          start: '\n{{}} \n',
-          between: '{{}} \n',
-          end: '{{}}',
-          onlyOne: '{{}}',
+          start: '\n{{}}',
+          between: '\n{{}}',
+          end: '\n{{}}\n',
+          onlyOne: '\n{{}}\n',
         },
       },
       // *** styles
+      type_style: {
+        input: [var_.name, 'name'],
+        default: 'S_{{ camelCase name }}',
+      },
       prop_component: {
         input: [var_.props.split(','), 'props'],
         match: [
           {
             key: '#',
-            value: "'{{ properCase props }}Props'",
+            value: c.prop_component('props'),
           },
         ],
         spaces: {
@@ -137,14 +130,26 @@ export default (var_) => {
           onlyOne: ', {{}}',
         },
       },
-      type_styled: {
-        input: [var_.name, 'name'],
-        default:
-          "type S_{{ camelCase name }}Props = Exclude<Pick<{{ camelCase name }}Props, 'children'{{ ...prop_component }}>, {{ camelCase name }}Props>",
+      prop_type_style: {
+        input: [var_.props.split(','), 'props'],
+        match: [
+          {
+            key: '@',
+            value: `Pick<${c.type_component(
+              'name',
+            )}, '${c.prop('props')}'>`,
+          },
+          {
+            key: '#@',
+            value: `Pick<${c.type_component(
+              'name',
+            )}, '${c.prop_component('props')}'>`,
+          },
+        ],
         spaces: {
-          start: '\n{{}}',
-          between: '{{}}',
-          end: '{{}}',
+          start: '\n{{}} &',
+          between: '\n{{}} &',
+          end: '\n{{}}',
           onlyOne: '{{}}',
         },
       },
@@ -154,8 +159,11 @@ export default (var_) => {
         match: [
           {
             key: '##',
-            value:
-              "import { mock_{{ snakeCase props }} } from '../{{ snakeCase props }}/{{ snakeCase props }}'",
+            value: `import { ${c.mock(
+              'props',
+            )} } from '../${file_name.folder(
+              'props',
+            )}/${file_name._mock('props')}'`,
           },
         ],
         spaces: {
@@ -165,26 +173,32 @@ export default (var_) => {
           onlyOne: '\n{{}} \n',
         },
       },
-      mock: {
+      name_mock: {
+        input: [var_.name, 'name'],
+        default: c.mock('name'),
+      },
+      prop_mock: {
         input: [var_.props.split(','), 'props'],
-        default: '// {{ camelCase props }}',
+        default: `// ${c.prop('props')}: `,
         match: [
           {
             key: '#',
-            value:
-              '// {{ properCase props }}Props: mock_{{ snakeCase props }}',
+            value: `// ${c.prop_component(
+              'props',
+            )}: ${c.mock('props')}`,
           },
           {
             key: '##',
-            value:
-              '{{ properCase props }}Props: mock_{{ snakeCase props }}',
+            value: `${c.prop_component('props')}: ${c.mock(
+              'props',
+            )}`,
           },
         ],
         spaces: {
           start: '\n\t{{}}, \n',
           between: '\t{{}}, \n',
           end: '\t{{}},',
-          onlyOne: '\n\t{{}} \n,',
+          onlyOne: '\n\t{{}}, \n',
         },
       },
       // *** stories && test

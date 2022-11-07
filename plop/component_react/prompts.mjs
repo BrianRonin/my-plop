@@ -79,8 +79,10 @@ export default [
       'Qual suas props?\nDivisor: ", "\nOpcional: "_"\n Component: "#"',
     name: 'props',
     filter: (input, r) => {
-      input.match('#') &&
+      input.match(/#/) &&
         (TransformComponent.var.hasPropComponent = true)
+      input.match(/@/) &&
+        (TransformComponent.var.hasTypeStyle = true)
       TransformComponent.var.props = input
       return input
     },

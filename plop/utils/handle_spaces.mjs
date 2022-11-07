@@ -8,7 +8,7 @@ export default (
   onlyOne,
 ) => {
   return index === 0
-    ? maxLength > 0
+    ? maxLength !== 1
       ? start
       : onlyOne
     : maxLength === index + 1

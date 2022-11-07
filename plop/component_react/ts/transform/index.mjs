@@ -30,9 +30,9 @@ export default (x, t) => {
     /__return__/,
     t.state(
       '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
-      '(\n\t\t<S.Main>\n\t\t\t//\n\t\t</S.Main>\n\t)',
+      '(\n\t\t<S.Main></S.Main>\n\t)',
       '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
-      '(\n\t\t<S.Main>\n\t\t\t//\n\t\t</S.Main>\n\t)',
+      '(\n\t\t<S.Main></S.Main>\n\t)',
     ),
   )
 

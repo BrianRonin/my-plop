@@ -1,5 +1,5 @@
 export default (x, t) => {
-  const { import_mock, snake_case_name } = t.start
+  const { import_mock, name_mock } = t.start
   let doc = x
   doc = doc.replace(
     /__importMock__/,
@@ -7,7 +7,12 @@ export default (x, t) => {
   )
   doc = doc.replace(
     /__hasMock__/,
-    t.var.hasMock ? '{ mock_' + snake_case_name + ' }' : '',
+    t.var.hasMock ? '{ ...' + name_mock + ' }' : '',
   )
+  t.var.hasGroup &&
+    (doc = doc.replace(
+      /..\/..\/styles\/render-theme/,
+      '../../../styles/render-theme',
+    ))
   return doc
 }
