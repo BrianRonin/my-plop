@@ -15,7 +15,6 @@ import file_name from './file_name.mjs'
 // ************* COMPONENTS ****************** //
 
 export default (var_) => {
-  const prop_component_snakeCase = []
   const c = Cases('__', {
     component: '{{ properCase __ }}',
     type_component: '{{ camelCase __ }}Props',
@@ -24,9 +23,11 @@ export default (var_) => {
     mock: 'mock_{{ snakeCase __ }}',
     type_style: 'S_{{ ...prop }}',
   })
+
+  const css_in_js = ['Styled Components', 'Emotion']
   return {
     custom: {
-      prop_component_snakeCase: prop_component_snakeCase,
+      css_in_js: css_in_js[1],
     },
     input: {
       name: var_.name,
@@ -68,7 +69,7 @@ export default (var_) => {
         default: c.prop('props') + ': any',
         match: [
           {
-            key: '_',
+            key: /_/,
             stages: {
               stage_3: (x) => {
                 return x.match(/\?/g)
@@ -78,17 +79,17 @@ export default (var_) => {
             },
           },
           {
-            key: '#',
+            key: /#/,
             value: `${c.prop_component(
               'props',
             )}: ${c.type_component('props')}`,
           },
         ],
         spaces: {
-          start: '{\n\t{{}}\n',
+          start: '{{}}\n',
           between: '\t{{}}\n',
-          end: '\t{{}}\n}',
-          onlyOne: '{ {{}} }',
+          end: '\t{{}}',
+          onlyOne: '{{}}',
         },
       },
       import_props_component: {

@@ -48,12 +48,14 @@ export default [
       'Storybook',
     ],
     filter: (x, r) => {
-      x.indexOf('Mock') > -1 &&
-        (TransformComponent.var.hasMock = true) &&
-        (r.hasMock = 'true')
-      x.indexOf('Props') > -1 &&
-        (TransformComponent.var.hasProps = true) &&
-        (r.hasProps = 'true')
+      if (x.indexOf('Mock') > -1) {
+        TransformComponent.var.hasMock = true
+        r.hasMock = 'true'
+      }
+      if (x.indexOf('Props') > -1) {
+        TransformComponent.var.hasProps = true
+        r.hasProps = 'true'
+      }
       if (x.indexOf('Test') > -1) {
         TransformComponent.var.hasTest = true
         r.hasTest = 'true'

@@ -17,8 +17,8 @@ export default class TransformComponent {
     hasPropComponent: false,
     hasTypeStyle: false,
     group: false,
-    name: false,
-    props: false,
+    name: '',
+    props: '',
     path: false,
   }
   static get start() {

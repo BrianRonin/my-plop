@@ -11,7 +11,11 @@ export default function build_my_plop(obj) {
       single_inputs[input] = obj.input[input]
     }
   })
-  return format_hooks(_formater(obj.config, single_inputs))
+  const resolve = format_hooks(
+    _formater(obj.config, single_inputs),
+  )
+  obj.custom && (resolve.custom = obj.custom)
+  return resolve
 }
 build_my_plop(
   plop_config_components({

@@ -9,10 +9,13 @@ export default (x, t) => {
   let doc = x.replace(
     /__propsType__/,
     t.state(
-      '\n\t' + 'children: React.ReactNode',
-      prop_type,
-      '\n\t' + 'children: React.ReactNode' + prop_type,
-      '\n\t' + '//',
+      '{\n\t' + 'children: React.ReactNode\n}',
+      '{ ' + prop_type + ' }',
+      '{\n\t' +
+        'children: React.ReactNode\n\t' +
+        prop_type +
+        '\n}',
+      '{\n\t' + '//\n}',
     ),
   )
   // *** modify ARG
