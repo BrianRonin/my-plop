@@ -1,5 +1,7 @@
-import plop_actions_component from './plop/component_react/actions.mjs'
-import prompts_components from './plop/component_react/prompts.mjs'
+import actions_component from './plop/plops/component_react/actions.mjs'
+import prompts_components from './plop/plops/component_react/prompts.mjs'
+import actions_plop from './plop/generator/actions.mjs'
+import prompts_plop from './plop/generator/prompts.mjs'
 
 export default function (
   /** @type {import('plop').NodePlopAPI} */
@@ -11,7 +13,13 @@ export default function (
   plop.setGenerator('component', {
     description: 'criação de componentes react com js/ts',
     prompts: [...prompts_components],
-    actions: [...plop_actions_component],
+    actions: [...actions_component],
+  })
+
+  plop.setGenerator('plop', {
+    description: 'criação de geradores de plop',
+    prompts: [...prompts_plop],
+    actions: [...actions_plop],
   })
 
   plop.setGenerator('markdown component', {

@@ -24,13 +24,24 @@ export default {
       )
     }
     text = text
+      .replace(new RegExp(/[^\w\s]/, 'g'), '')
       .replace(/[^a-zA-Z0-9$_\-\s.]/g, '')
       .replace(/^[0-9_\-\s.]+/, '')
     return camelize_(text)
   },
+  clean: (str) =>
+    str &&
+    str
+      .replace(new RegExp(/[^\w\s]/, 'g'), '')
+      .match(
+        /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g,
+      )
+      .map((x) => x.toLowerCase())
+      .join(' '),
   snakeCase: (str) =>
     str &&
     str
+      .replace(new RegExp(/[^\w\s]/, 'g'), '')
       .match(
         /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g,
       )
@@ -39,6 +50,7 @@ export default {
   constantCase: (str) =>
     str &&
     str
+      .replace(new RegExp(/[^\w\s]/, 'g'), '')
       .match(
         /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g,
       )

@@ -1,7 +1,7 @@
 import case_modifiers from '../utils/case_modifiers.mjs'
 import cleanInput from '../utils/clean_input.mjs'
 import format_hooks from './format_hooks.mjs'
-import plop_config_components from '../component_react/settings.mjs'
+import plop_config_components from '../plops/component_react/settings.mjs'
 import handle_spaces from '../utils/handle_spaces.mjs'
 
 export default function build_my_plop(obj) {
@@ -21,7 +21,7 @@ build_my_plop(
   plop_config_components({
     name: 'componente novo',
     props:
-      '_prop opcional, #prop component, prop normal, _##prop opcional component importado, ##prop importada',
+      '_@prop opcional, #prop component, prop normal, _##@prop opcional component importado, ##prop importada',
   }),
 )
 function _formater(obj, single_inputs) {
@@ -116,10 +116,11 @@ function formater(obj, inputs) {
         const output = stages.stage_2(
           case_modifiers[modifier](
             stages.stage_1(
-              cleanInput(
-                stages.stage_0(inputs[input]),
-                new RegExp(`[^${keys_of_match.join()} ]`),
-              ),
+              stages.stage_0(inputs[input]),
+              // cleanInput(
+              //   stages.stage_0(inputs[input]),
+              //   new RegExp(`[^${keys_of_match.join()} ]`),
+              // ),
             ),
           ),
         )
