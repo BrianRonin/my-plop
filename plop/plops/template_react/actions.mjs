@@ -8,13 +8,13 @@ const getPaths_component = (whatIs, skip) => {
   return {
     type: 'add',
     templateFile:
-      'plop/plops/component_react/{{ isTs }}/generator/' +
+      'plop/plops/template_react/{{ isTs }}/generator/' +
       whatIs +
       '.hbs',
     path: '{{ group }}'
-      ? `src/components/{{ constantCase group }}/${name_folder}/` +
+      ? `src/templates/{{ constantCase group }}/${name_folder}/` +
         file_name[whatIs]('na' + 'me')
-      : `./src/components/${name_folder}/` +
+      : `./src/templates/${name_folder}/` +
         file_name[whatIs]('na' + 'me'), //diretorio destiono
     transform: (doc) => TransformComponent[whatIs](doc),
     skip: () => (skip ? false : '-SKIP ' + whatIs),
