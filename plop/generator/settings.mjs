@@ -43,7 +43,7 @@ export default (var_) => {
           start: '{{}}',
           between: '{{}}',
           end: '{{}}',
-          onlyOne: "\n\tfolder: '{{ snakeCase }}',{{}}",
+          onlyOne: '{{}}',
         },
       },
       // ** Filenames
@@ -98,6 +98,16 @@ export default (var_) => {
           onlyOne: '{{}}',
         },
       },
+      hasInputs: {
+        input: [var_.inputs.split(','), 'inputs'],
+        default: `\n\t\thas${c.inputs('inputs')}: false,`,
+        spaces: {
+          start: '{{}}',
+          between: '{{}}',
+          end: '{{}}',
+          onlyOne: '{{}}',
+        },
+      },
       // ** Settings
       cases: {
         input: [var_.inputs.split(','), 'inputs'],
@@ -105,10 +115,10 @@ export default (var_) => {
           'inputs',
         )}: '{{ snakeCase __ }}',`,
         spaces: {
-          start: `\n\t\tname: '{{snakeCase}},'{{}}`,
+          start: `\n\t\tname: '{{ snakeCase __ }}',{{}}`,
           between: '{{}}',
           end: '{{}}',
-          onlyOne: `\n\t\tname: '{{snakeCase}},'{{}}`,
+          onlyOne: `\n\t\tname: '{{ snakeCase __ }}',{{}}`,
         },
       },
       inputsSettings: {
@@ -126,6 +136,27 @@ export default (var_) => {
       commentsSettings: {
         input: [var_.files.split(','), 'files'],
         default: `\n\t\t\t// ** ${c.files('files')}`,
+        spaces: {
+          start: '{{}}',
+          between: '{{}}',
+          end: '{{}}',
+          onlyOne: '{{}}',
+        },
+      },
+      // ** Prompts
+      inputsPrompt: {
+        input: [var_.inputs.split(','), 'inputs'],
+        default: `
+  {
+    type: 'input',
+    name: '${c.inputs('inputs')}',
+    message: '${c.inputs('inputs')}: ',
+    filter: (input) => {
+      Transform.var.${c.inputs('inputs')} = input
+      Transform.var.has${c.inputs('inputs')} = !!input
+      return input
+    },
+  },`,
         spaces: {
           start: '{{}}',
           between: '{{}}',

@@ -1,6 +1,7 @@
 import build from '../config/formater.mjs'
 import config from './settings.mjs'
-__import_transform__
+import transform_index from './template/transform/index.mjs'
+import transform_styles from './template/transform/styles.mjs'
 
 export default class Transform {
   static var = {
@@ -19,5 +20,11 @@ export default class Transform {
     return resolve
   }
 
-  __transform__
+	static index(doc) {
+		return transform_index(doc, Transform)
+	}
+
+	static styles(doc) {
+		return transform_styles(doc, Transform)
+	}
 }

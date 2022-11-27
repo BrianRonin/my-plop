@@ -1,5 +1,5 @@
 import case_modifiers from '../utils/case_modifiers.mjs'
-import TransformComponent from './template.mjs'
+import Transform from './template.mjs'
 
 export default [
   {
@@ -7,7 +7,7 @@ export default [
     name: 'name',
     message: 'qual o nome do plop?',
     filter: (input, answers) => {
-      TransformComponent.var.name = input
+      Transform.var.name = input
       return input
     },
   },
@@ -16,7 +16,7 @@ export default [
     name: 'files',
     message: 'quais arquivos você criara',
     filter: (input, answers) => {
-      TransformComponent.var.files = input
+      Transform.var.files = input
       input.split(',').forEach((_input, i) => {
         const input = case_modifiers.snakeCase(_input)
         answers[`_${i.toString()}_`] = input
@@ -29,7 +29,8 @@ export default [
     name: 'inputs',
     message: 'quais inputs para criação',
     filter: (input, answers) => {
-      TransformComponent.var.inputs = input
+      Transform.var.inputs = input
+      Transform.var.hasInputs = !!input
       return input
     },
   },
@@ -40,8 +41,8 @@ export default [
   //   filter: (input, answers) => {
   //     if (input) {
   //       const path = input.replace(' ', '/')
-  //       TransformComponent.var.hasGroup = true
-  //       TransformComponent.var.group = path
+  //       Transform.var.hasGroup = true
+  //       Transform.var.group = path
   //       answers.titleStorybook =
   //         'components/' + path + '/' + answers.name
   //       return input
@@ -72,23 +73,23 @@ export default [
   //   ],
   //   filter: (x, r) => {
   //     if (x.indexOf('Mock') > -1) {
-  //       TransformComponent.var.hasMock = true
+  //       Transform.var.hasMock = true
   //       r.hasMock = 'true'
   //     }
   //     if (x.indexOf('Props') > -1) {
-  //       TransformComponent.var.hasProps = true
+  //       Transform.var.hasProps = true
   //       r.hasProps = 'true'
   //     }
   //     if (x.indexOf('Test') > -1) {
-  //       TransformComponent.var.hasTest = true
+  //       Transform.var.hasTest = true
   //       r.hasTest = 'true'
   //     }
   //     if (x.indexOf('Storybook') > -1) {
-  //       TransformComponent.var.hasStorybook = true
+  //       Transform.var.hasStorybook = true
   //       r.hasStorybook = 'true'
   //     }
   //     if (x.indexOf('Chield') > -1)
-  //       TransformComponent.var.hasChield = true
+  //       Transform.var.hasChield = true
   //     if (x.indexOf('Typescript') > -1) {
   //       r.isTs = 'ts'
   //     } else {
@@ -105,10 +106,10 @@ export default [
   //   name: 'props',
   //   filter: (input, r) => {
   //     input.match(/#/) &&
-  //       (TransformComponent.var.hasPropComponent = true)
+  //       (Transform.var.hasPropComponent = true)
   //     input.match(/@/) &&
-  //       (TransformComponent.var.hasTypeStyle = true)
-  //     TransformComponent.var.props = input
+  //       (Transform.var.hasTypeStyle = true)
+  //     Transform.var.props = input
   //     return input
   //   },
   // },

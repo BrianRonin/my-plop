@@ -1,6 +1,9 @@
 import _cases from '../utils/cases.mjs'
 
-const cases = _cases('__', {__fileNames__
+const cases = _cases('__', {
+	folder: '{{ snakeCase }}',
+	index: '{{ snakeCase __ }}',
+	styles: '{{ snakeCase __ }}',
 })
 
 const cases_without_extension = Object.keys(cases).reduce(

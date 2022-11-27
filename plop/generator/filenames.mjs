@@ -7,8 +7,8 @@ const cases = _cases('__', {
   prompts: 'prompts.mjs',
   settings: 'settings.mjs',
   template: 'template.mjs',
-  generator: '{{ snakeCase __ }}.mjs',
-  transform: '{{ snakeCase __ }}.mjs',
+  generator: '{{ snakeCase __ }}.hbs',
+  transform: '{{ snakeCase __ }}.hbs',
 })
 
 const cases_without_extension = Object.keys(cases).reduce(

@@ -16,16 +16,21 @@ import file_name from './file_name.mjs'
 
 export default (var_) => {
   const c = Cases('__', {
-    //
+		name: '{{ snakeCase __ }}',
+		mock: '{{ snakeCase __ }}',
+		types: '{{ snakeCase __ }}',
   })
 
   return {
     custom: {},
     input: {
       name: var_.name,
+			mock: var_.mock,
+			types: var_.types,
     },
     config: {
-      //
+			// ** index
+			// ** styles
     },
   }
 }

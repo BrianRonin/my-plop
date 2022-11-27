@@ -25,4 +25,11 @@ const getPaths = (
   }
 }
 
-export default [undefined]
+export default [
+	{
+		...getPaths('index', () => false),
+	},
+	{
+		...getPaths('styles', () => false),
+	},
+]

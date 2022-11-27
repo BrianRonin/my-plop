@@ -16,7 +16,7 @@ import file_name from './file_name.mjs'
 
 export default (var_) => {
   const c = Cases('__', {
-    //
+		name: '{{ snakeCase __ }}',
   })
 
   return {
@@ -25,7 +25,8 @@ export default (var_) => {
       name: var_.name,
     },
     config: {
-      //
+			// ** index
+			// ** styles
     },
   }
 }

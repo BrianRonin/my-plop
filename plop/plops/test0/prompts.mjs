@@ -4,10 +4,10 @@ export default [
   {
     type: 'input',
     name: 'name',
-    message: 'escolha um nome',
+    message: 'name: ',
     filter: (input) => {
       Transform.var.name = input
       return input
     },
-  }
+  },
 ]

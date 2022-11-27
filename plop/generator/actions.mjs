@@ -32,7 +32,7 @@ const getMany = (type) => {
   return x.split(',').map((file, i) => {
     return {
       ...getPaths(
-        'generator',
+        type,
         (answers) =>
           answers['_' + i + '_'] ? false : '--',
         `template/${type}/`,

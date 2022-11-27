@@ -13,6 +13,7 @@ export default class Transform {
     name: '',
     files: '',
     inputs: '',
+    hasInputs: false,
     filesLength: 0,
   }
 
