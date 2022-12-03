@@ -26,5 +26,9 @@ export default (x, t) => {
     /__type_style__/,
     t.var.hasTypeStyle ? `<${type_style}>` : '',
   )
+  doc = doc.replace(
+    /__importType__/,
+    t.var.hasTypeStyle ? `<${type_style}>` : '',
+  )
   return doc
 }

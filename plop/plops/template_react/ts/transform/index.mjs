@@ -4,6 +4,7 @@ export default (x, t) => {
     name_type,
     prop,
     import_props_component,
+    import_style,
   } = t.start
   // *** modify PROPS TYPES
   let doc = x.replace(
@@ -44,6 +45,6 @@ export default (x, t) => {
     /__importComponentAndType__/,
     import_props_component,
   )
-
+  doc = doc.replace(/__importStyles__/, import_style)
   return doc
 }

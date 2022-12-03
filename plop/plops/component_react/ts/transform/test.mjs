@@ -1,5 +1,6 @@
 export default (x, t) => {
-  const { import_mock, name_mock } = t.start
+  const { import_mock, name_mock, import_component } =
+    t.start
   let doc = x
   doc = doc.replace(
     /__importMock__/,
@@ -14,5 +15,6 @@ export default (x, t) => {
       /..\/..\/styles\/render-theme/,
       '../../../styles/render-theme',
     ))
+  doc = doc.replace(/__importComponent__/, import_component)
   return doc
 }

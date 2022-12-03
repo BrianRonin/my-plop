@@ -34,7 +34,6 @@ export default (var_) => {
       props: var_.props,
     },
     config: {
-      // *** general cases
       // *** index
       name_type: {
         input: [var_.name, 'name'],
@@ -47,6 +46,30 @@ export default (var_) => {
       export_and_import_mock: {
         input: [var_.name, 'name'],
         default: c.mock('name'),
+      },
+      import_component: {
+        input: [var_.name, 'name'],
+        default: `import { {{ ...name_component }} } from './${file_name._index(
+          'name',
+        )}'`,
+      },
+      import_type: {
+        input: [var_.name, 'name'],
+        default: `import { {{ ...name_type }} } from './${file_name._index(
+          'name',
+        )}'`,
+      },
+      import_component_and_type: {
+        input: [var_.name, 'name'],
+        default: `import { {{ ...name_component }}, {{ ...name_type }} } from './${file_name._index(
+          'name',
+        )}'`,
+      },
+      import_style: {
+        input: [var_.name, 'name'],
+        default: `import * as S from './${file_name._styles(
+          'name',
+        )}'`,
       },
       prop: {
         input: [var_.props.split(','), 'props'],
@@ -205,8 +228,9 @@ export default (var_) => {
       // *** stories && test
       import_mock: {
         input: [var_.name, 'name'],
-        default:
-          "import { mock_{{ snakeCase name }} } from './M.{{ snakeCase name }}'",
+        default: `import { ${c.mock(
+          'name',
+        )} } from './${file_name._mock('name')}'`,
         spaces: {
           start: '{{}} \n',
           between: '{{}} \n',

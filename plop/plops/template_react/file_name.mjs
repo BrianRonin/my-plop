@@ -1,12 +1,12 @@
 import _cases from '../../utils/cases.mjs'
 
 const cases = _cases('__', {
-  folder: '{{ snakeCase __ }}',
-  index: '{{ snakeCase __ }}.tsx',
-  stories: '{{ snakeCase __ }}.stories.tsx',
-  styles: 'S.{{ snakeCase __ }}.tsx',
-  mock: 'M.{{ snakeCase __ }}.tsx',
-  test: '{{ snakeCase __ }}.test.tsx',
+  folder: '{{ properCase __ }}',
+  index: '{{ properCase __ }}.tsx',
+  stories: '{{ properCase __ }}.stories.tsx',
+  styles: 'S.{{ properCase __ }}.tsx',
+  mock: 'M.{{ properCase __ }}.tsx',
+  test: '{{ properCase __ }}.test.tsx',
 })
 
 const cases_without_extension = Object.keys(cases).reduce(
