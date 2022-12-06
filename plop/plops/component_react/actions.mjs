@@ -29,7 +29,7 @@ export default [
     ...getPaths_component('stories', 'hasStorybook'),
   },
   {
-    ...getPaths_component('index', false),
+    ...getPaths_component('index', 'hasIndex'),
   },
   {
     ...getPaths_component('styles', false),

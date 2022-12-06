@@ -22,6 +22,8 @@ export default (var_) => {
     prop_component: '{{ properCase __ }}Props',
     mock: 'mock_{{ snakeCase __ }}',
     type_style: 'S_{{ ...prop }}',
+    style_as_component: 'S_{{ ...component }}',
+    main_style: 'Main',
   })
 
   const css_in_js = ['Styled Components', 'Emotion']
@@ -65,7 +67,7 @@ export default (var_) => {
           'name',
         )}'`,
       },
-      import_style: {
+      import_all_styles: {
         input: [var_.name, 'name'],
         default: `import * as S from './${file_name._styles(
           'name',
@@ -135,6 +137,14 @@ export default (var_) => {
         },
       },
       // *** styles
+      main_style_name: {
+        input: [var_.name, 'name'],
+        default: c.main_style('name'),
+      },
+      style_as_component: {
+        input: [var_.name, 'name'],
+        default: c.style_as_component('name'),
+      },
       type_style: {
         input: [var_.name, 'name'],
         default: 'S_{{ camelCase name }}',
@@ -237,6 +247,12 @@ export default (var_) => {
           end: '{{}}',
           onlyOne: '{{}} \n',
         },
+      },
+      import_style_as_component: {
+        input: [var_.name, 'name'],
+        default: `import { ${c.style_as_component(
+          'name',
+        )} } from './${file_name._styles('name')}'`,
       },
     },
   }

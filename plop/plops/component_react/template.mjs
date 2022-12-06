@@ -8,6 +8,8 @@ import transformComponent_test from './ts/transform/test.mjs'
 
 export default class TransformComponent {
   static var = {
+    htmlElement: '',
+    hasIndex: false,
     hasChield: false,
     hasProps: false,
     hasMock: false,

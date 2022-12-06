@@ -34,12 +34,17 @@ export default [
     type: 'input',
     name: 'htmlElement',
     message: 'qual o elemento HTML do Main?',
+    filter: (x, r) => {
+      TransformComponent.var.htmlElement = x
+      return x
+    },
   },
   {
     type: 'checkbox',
     message: 'Seu componente tem?',
     name: 'components_choices',
     choices: [
+      'Index',
       'Mock',
       'Chield',
       'Props',
@@ -48,15 +53,21 @@ export default [
       'Storybook',
     ],
     filter: (x, r) => {
-      if (x.indexOf('Mock') > -1) {
+      let hasIndex = false
+      if (x.indexOf('Index') > -1) {
+        hasIndex = true
+        TransformComponent.var.hasIndex = true
+        r.hasIndex = 'true'
+      }
+      if (x.indexOf('Mock') > -1 && hasIndex) {
         TransformComponent.var.hasMock = true
         r.hasMock = 'true'
       }
-      if (x.indexOf('Props') > -1) {
+      if (x.indexOf('Props' && hasIndex) > -1) {
         TransformComponent.var.hasProps = true
         r.hasProps = 'true'
       }
-      if (x.indexOf('Test') > -1) {
+      if (x.indexOf('Test') > -1 && hasIndex) {
         TransformComponent.var.hasTest = true
         r.hasTest = 'true'
       }
@@ -75,7 +86,7 @@ export default [
     },
   },
   {
-    when: (answer) => answer.hasProps,
+    when: (answer) => answer.hasProps && answer.hasIndex,
     type: 'input',
     message:
       'Qual suas props?\nDivisor: ", "\nOpcional: "_"\n Component: "#"',

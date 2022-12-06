@@ -2,6 +2,8 @@ export default (x, t) => {
   const {
     type_style,
     prop_type_style,
+    main_style_name,
+    style_as_component,
     custom: { css_in_js },
   } = t.start
   let doc = x
@@ -30,5 +32,11 @@ export default (x, t) => {
     /__importType__/,
     t.var.hasTypeStyle ? `<${type_style}>` : '',
   )
+
+  doc = doc.replace(
+    /__nameStyle__/,
+    t.var.hasIndex ? main_style_name : style_as_component,
+  )
+
   return doc
 }

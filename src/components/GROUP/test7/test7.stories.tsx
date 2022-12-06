@@ -1,20 +1,29 @@
 import { Meta, Story } from '@storybook/react/types-6-0'
-import { Test7, test7Props } from './test7'
 
+
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { S_Test7 } from './S.test7'
 
 export default {
   title: 'components/group/test7',
-  component: Test7,
-  args: {
-	children: <h1>tudo ok<h1>,
-	},
+  
+  
 } as Meta
 
- export const Template: Story<test7Props > = (args) => <Test7 {...args} />
+const _S_Test7 = styled.div`
+  ${({theme}) => css`
+    ${S_Test7}
+  `}
+`
+
+
+export const Template: Story = (args) => <_S_Test7 />
 
 Template.parameters = {
   layout: 'fullscren',
   backgrounds: {
+    disable: true,
     default: 'light'
   },
 }
