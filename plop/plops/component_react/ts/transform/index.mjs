@@ -46,5 +46,9 @@ export default (x, t) => {
     import_props_component,
   )
   doc = doc.replace(/__importStyles__/, import_style)
+  // doc = doc.replace(
+  //   /teste/,
+  //   t.hasMock ? 'tem test' : 'não tem test',
+  // )
   return doc
 }

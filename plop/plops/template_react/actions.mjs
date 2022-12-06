@@ -17,24 +17,27 @@ const getPaths_component = (whatIs, skip) => {
       : `./src/templates/${name_folder}/` +
         file_name[whatIs]('na' + 'me'), //diretorio destiono
     transform: (doc) => TransformComponent[whatIs](doc),
-    skip: () => (skip ? false : '-SKIP ' + whatIs),
+    skip: (answers) => {
+      if (typeof skip === 'boolean') return skip
+      return answers[skip] ? false : '-SKIP ' + whatIs
+    },
   }
 }
 
 export default [
   {
-    ...getPaths_component('stories', '{{ hasStorybook }}'),
+    ...getPaths_component('stories', 'hasStorybook'),
   },
   {
-    ...getPaths_component('index', '{{ name }}'),
+    ...getPaths_component('index', false),
   },
   {
-    ...getPaths_component('styles', '{{ name }}'),
+    ...getPaths_component('styles', false),
   },
   {
-    ...getPaths_component('mock', '{{ hasMock }}'),
+    ...getPaths_component('mock', 'hasMock'),
   },
   {
-    ...getPaths_component('test', '{{ hasTest }}'),
+    ...getPaths_component('test', 'hasTest'),
   },
 ]
