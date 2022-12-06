@@ -17,7 +17,7 @@ export default (x, t) => {
   )
   doc = doc.replace(
     /__hasComponent__/,
-    t.var.hasIndex ? `component: ${name_component}` : '',
+    t.var.hasIndex ? `component: ${name_component},` : '',
   )
 
   doc = doc.replace(
@@ -37,7 +37,7 @@ export default (x, t) => {
   )
   doc = doc.replace(
     /__hasArgs__/,
-    t.var.hasIndex ? `args: __hasMock__` : '',
+    t.var.hasIndex ? `args: __hasMock__,` : '',
   )
   doc = doc.replace(
     /__hasMock__/,

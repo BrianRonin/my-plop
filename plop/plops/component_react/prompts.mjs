@@ -63,7 +63,7 @@ export default [
         TransformComponent.var.hasMock = true
         r.hasMock = 'true'
       }
-      if (x.indexOf('Props' && hasIndex) > -1) {
+      if (x.indexOf('Props') > -1 && hasIndex) {
         TransformComponent.var.hasProps = true
         r.hasProps = 'true'
       }
