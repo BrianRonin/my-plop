@@ -1,18 +1,23 @@
 import _cases from '../../utils/cases.mjs'
 
 const cases = _cases('__', {
-  folder: '{{ properCase __ }}',
-  index: '{{ properCase __ }}.tsx',
-  stories: '{{ properCase __ }}.stories.tsx',
-  styles: 'S.{{ properCase __ }}.tsx',
-  mock: 'M.{{ properCase __ }}.tsx',
-  test: '{{ properCase __ }}.test.tsx',
+  folder: '{{ snakeCase __ }}',
+  index: 'index.tsx',
+  stories: 'stories.tsx',
+  styles: 'styles.tsx',
+  mock: 'mock.tsx',
+  test: 'test.tsx',
 })
 
 const cases_without_extension = Object.keys(cases).reduce(
   (p, k) => {
     const str = cases[k]().replace(/}}\.[^\s]*/g, '}}')
-    return { ...p, ['_' + k]: str }
+    const _str = cases[k]().replace(/\.[^\s]*/g, '')
+    if (cases[k]().match('}}')) {
+      return { ...p, ['_' + k]: str }
+    } else {
+      return { ...p, ['_' + k]: _str }
+    }
   },
   {},
 )

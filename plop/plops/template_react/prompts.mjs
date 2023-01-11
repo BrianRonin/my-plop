@@ -38,7 +38,7 @@ export default [
   {
     type: 'checkbox',
     message: 'Seu componente tem?',
-    name: 'components_choices',
+    name: 'template_choices',
     choices: [
       'Mock',
       'Chield',

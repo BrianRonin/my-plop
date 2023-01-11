@@ -1,0 +1,20 @@
+import { Meta, Story } from '@storybook/react/types-6-0'
+import { TesteQuatro, testeQuatroProps } from '.'
+import { mock_teste_quatro } from './mock'
+
+export default {
+  title: 'components/talvez/teste quatro',
+  component: TesteQuatro,
+  args: mock_teste_quatro,
+} as Meta
+
+
+export const Template: Story< testeQuatroProps> = (args) => <TesteQuatro {...args} />
+
+Template.parameters = {
+  layout: 'fullscren',
+  backgrounds: {
+    disable: true,
+    default: 'light'
+  },
+}

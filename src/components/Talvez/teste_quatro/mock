@@ -1,0 +1,5 @@
+import { testeQuatroProps } from '.'
+
+export const mock_teste_quatro = {
+	children: ':D',
+} as testeQuatroProps

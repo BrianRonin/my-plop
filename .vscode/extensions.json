@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "PKief.material-icon-theme",
+    "aaron-bond.better-comments",
+    "esbenp.prettier-vscode",
+    "naumovs.color-highlight",
+    "mikestead.dotenv",
+    "EditorConfig.EditorConfig",
+    "dbaeumer.vscode-eslint"
+  ]
+}

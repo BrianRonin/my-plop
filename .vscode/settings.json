@@ -1,0 +1,21 @@
+{
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "material-icon-theme.files.associations": {
+    "*.ts": "typescript",
+    "**.json": "json",
+    "fileName.ts": "angular",
+    "stories.ts": "Storybook",
+    "stories.tsx": "Storybook",
+    "stories.js": "Storybook",
+    "stories.jsx": "Storybook",
+    "test.tsx": "Test-ts",
+    "test.js": "Test-js",
+    "test.jsx": "Test-jsx",
+    "plopfile.mjs": "Plop",
+    "test.ts": "Test-ts",
+    "plopfile.js": "Plop"
+  },
+  "material-icon-theme.folders.associations": {
+    "plop": "Controller"
+  }
+}

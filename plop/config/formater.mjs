@@ -1,5 +1,4 @@
 import case_modifiers from '../utils/case_modifiers.mjs'
-import cleanInput from '../utils/clean_input.mjs'
 import format_hooks from './format_hooks.mjs'
 import plop_config_components from '../plops/component_react/settings.mjs'
 import handle_spaces from '../utils/handle_spaces.mjs'
@@ -115,13 +114,7 @@ function formater(obj, inputs) {
       if (resolve.match(regex)) {
         const output = stages.stage_2(
           case_modifiers[modifier](
-            stages.stage_1(
-              stages.stage_0(inputs[input]),
-              // cleanInput(
-              //   stages.stage_0(inputs[input]),
-              //   new RegExp(`[^${keys_of_match.join()} ]`),
-              // ),
-            ),
+            stages.stage_1(stages.stage_0(inputs[input])),
           ),
         )
         resolve = stages.stage_3(

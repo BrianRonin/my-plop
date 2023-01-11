@@ -12,7 +12,7 @@ const getPaths_component = (whatIs, skip) => {
       whatIs +
       '.hbs',
     path: '{{ group }}'
-      ? `src/components/{{ constantCase group }}/${name_folder}/` +
+      ? `src/components/{{ properCase group }}/${name_folder}/` +
         file_name[whatIs]('na' + 'me')
       : `./src/components/${name_folder}/` +
         file_name[whatIs]('na' + 'me'), //diretorio destiono
