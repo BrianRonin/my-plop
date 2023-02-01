@@ -44,7 +44,12 @@ var cases = cases_default("__", myFiles);
 var cases_without_extension = Object.keys(cases).reduce(
   (p, k) => {
     const str = cases[k]().replace(/}}\.[^\s]*/g, "}}");
-    return { ...p, ["_" + k]: str };
+    const _str = cases[k]().replace(/\.[^\s]*/g, "");
+    if (cases[k]().match("}}")) {
+      return { ...p, ["_" + k]: str };
+    } else {
+      return { ...p, ["_" + k]: _str };
+    }
   },
   {}
 );
@@ -140,14 +145,14 @@ function build_my_plop(obj) {
       single_inputs[input] = obj.input[input];
     }
   });
-  const resolve2 = format_hooks(
+  const resolve3 = format_hooks(
     _formater(obj.config, single_inputs)
   );
-  obj.custom && (resolve2.custom = obj.custom);
-  return resolve2;
+  obj.custom && (resolve3.custom = obj.custom);
+  return resolve3;
 }
 function _formater(obj, single_inputs) {
-  const resolve2 = {};
+  const resolve3 = {};
   Object.keys(obj).forEach((k) => {
     if (Array.isArray(obj[k].input[0])) {
       let outputs = [];
@@ -165,8 +170,8 @@ function _formater(obj, single_inputs) {
         );
         _output && outputs.push(_output);
       });
-      resolve2[k] = outputs.length > 0 ? outputs.reduce((prev, output, index) => {
-        const resolve3 = handle_spaces_default(
+      resolve3[k] = outputs.length > 0 ? outputs.reduce((prev, output, index) => {
+        const resolve4 = handle_spaces_default(
           index,
           outputs.length,
           outputs,
@@ -187,10 +192,10 @@ function _formater(obj, single_inputs) {
             output
           )
         );
-        return [...prev, resolve3];
+        return [...prev, resolve4];
       }, []).join("") : "";
     } else {
-      resolve2[k] = formater(
+      resolve3[k] = formater(
         {
           ...obj[k],
           input: obj[k].input[0]
@@ -199,11 +204,11 @@ function _formater(obj, single_inputs) {
       );
     }
   });
-  obj.custom && (resolve2.custom = obj.custom);
-  return resolve2;
+  obj.custom && (resolve3.custom = obj.custom);
+  return resolve3;
 }
 function formater(obj, inputs) {
-  let resolve2;
+  let resolve3;
   let stages = {
     stage_0: (x) => x,
     stage_1: (x) => x,
@@ -211,11 +216,11 @@ function formater(obj, inputs) {
     stage_3: (x) => x
   };
   let keys_of_match = [];
-  resolve2 = obj.default ?? "";
+  resolve3 = obj.default ?? "";
   obj.match && obj.match.map((match) => {
     keys_of_match.push(match.key);
     if (obj.input.match(match.key)) {
-      match.value && typeof match.value === "string" && (resolve2 = match.value);
+      match.value && typeof match.value === "string" && (resolve3 = match.value);
       match.stages && (stages = {
         ...stages,
         ...match.stages
@@ -230,31 +235,31 @@ function formater(obj, inputs) {
         `{{ ${modifier} ${input} }}`,
         "g"
       );
-      if (resolve2.match(regex)) {
+      if (resolve3.match(regex)) {
         const output = stages.stage_2(
           func(
             stages.stage_1(stages.stage_0(inputs[input]))
           )
         );
-        resolve2 = stages.stage_3(
-          resolve2.replace(regex, output)
+        resolve3 = stages.stage_3(
+          resolve3.replace(regex, output)
         );
       }
     }
   });
-  return resolve2;
+  return resolve3;
 }
 
 // plop/generator/settings.ts
 var settings_default = (var_) => {
-  const cases2 = {
+  const cases3 = {
     name: "{{ snakeCase __ }}",
     files: "{{ snakeCase __ }}",
     inputs: "{{ snakeCase __ }}",
     cases: "{{ snakeCase __ }}",
     transform_files: "transform_{{ snakeCase __ }}"
   };
-  const c = cases_default("__", cases2);
+  const c = cases_default("__", cases3);
   const config = {
     getPaths: {
       input: [var_.files.split(","), "files"],
@@ -262,7 +267,7 @@ var settings_default = (var_) => {
 	{
 		...getPaths('${c.files(
         "files"
-      )}', () => false),
+      )}', false)
 	},`,
       spaces: {
         start: "{{}}",
@@ -270,6 +275,30 @@ var settings_default = (var_) => {
         end: "{{}}",
         onlyOne: "{{}}"
       }
+    },
+    getPathsWithCustomize: {
+      input: [var_.files.split(","), "files"],
+      default: `
+	{
+		...getPaths('${c.files(
+        "files"
+      )}', 'has_${c.files("files")}'),
+	},`,
+      spaces: {
+        start: "{{}}",
+        between: "{{}}",
+        end: "{{}}",
+        onlyOne: "{{}}"
+      },
+      match: [
+        {
+          stages: {
+            stage_3(v) {
+              return v.replace("*{*{*", "{{");
+            }
+          }
+        }
+      ]
     },
     fileNames: {
       input: [var_.files.split(","), "files"],
@@ -328,12 +357,23 @@ import ${c.transform_files(
     hasInputs: {
       input: [var_.inputs.split(","), "inputs"],
       default: `
-		has${c.inputs("inputs")}: false,`,
+		has_${c.inputs("inputs")}: false,`,
       spaces: {
         start: "{{}}",
         between: "{{}}",
         end: "{{}}",
         onlyOne: "{{}}"
+      }
+    },
+    hasFileInputs: {
+      input: [var_.files.split(","), "files"],
+      default: `
+		has_${c.files("files")}: false,`,
+      spaces: {
+        between: "{{}}",
+        end: "{{}}",
+        onlyOne: "{{}}",
+        start: "{{}}"
       }
     },
     cases: {
@@ -384,7 +424,7 @@ import ${c.transform_files(
     message: '${c.inputs("inputs")}: ',
     filter: (input) => {
       Transform.Var.${c.inputs("inputs")} = input
-      Transform.Var.has${c.inputs("inputs")} = !!input
+      Transform.Var.has_${c.inputs("inputs")} = !!input
       return input
     },
   },`,
@@ -397,16 +437,77 @@ import ${c.transform_files(
     },
     typesInput: {
       input: [var_.inputs.split(","), "inputs"],
-      default: `	${c.inputs("inputs")}`,
+      default: `	${c.inputs(
+        "inputs"
+      )}: string
+	has_${c.inputs("inputs")}: boolean`,
       spaces: {
         start: "\n{{}}",
         between: "\n{{}}",
         end: "\n{{}}",
         onlyOne: "\n{{}}"
+      },
+      match: [
+        {
+          key: "has",
+          value: `	${c.inputs("inputs")}: string`
+        }
+      ]
+    },
+    customize_files_choice_types: {
+      input: [var_.files.split(","), "files"],
+      default: `
+	has_${c.files("files")}: boolean`,
+      spaces: {
+        between: "{{}}",
+        end: "{{}}",
+        onlyOne: "{{}}",
+        start: "{{}}"
       }
+    },
+    customize_files_choices: {
+      input: [var_.files.split(","), "files"],
+      default: `
+	'${c.files("files")}'`,
+      spaces: {
+        between: "{{}},",
+        end: "{{}}",
+        onlyOne: "{{}}",
+        start: "{{}},"
+      }
+    },
+    customize_files_filter: {
+      input: [var_.files.split(","), "files"],
+      default: `
+      if (input.indexOf('${c.files("files")}') > -1) {
+        Transform.Var.has_${c.files("files")} = true
+        answers.has_${c.files("files")} = 'true'
+      }`,
+      spaces: {
+        between: "{{}}",
+        end: "{{}}",
+        onlyOne: "{{}}",
+        start: "{{}}"
+      }
+    },
+    customize_files: {
+      input: [var_.files, "name"],
+      default: `
+  {
+    type: 'checkbox',
+    message: 'Quais arquivos devem ser criados?',
+    name: 'customizeFiles',
+    choices: [{{ ...customize_files_choices }},
+    ],
+    filter: (input: string[], answers: Record<string, any>) => {
+      {{ ...customize_files_filter }}
+      return input
+    },
+  },
+      `
     }
   };
-  const resolve2 = {
+  const resolve3 = {
     custom: {},
     input: {
       name: var_.name,
@@ -415,15 +516,18 @@ import ${c.transform_files(
     },
     config
   };
-  return resolve2;
+  return resolve3;
 };
 
 // plop/generator/template/transform/actions.ts
 var actions_default = (x, t) => {
   console.log(t.start);
-  const { getPaths: getPaths2 } = t.start;
+  const { getPaths: getPaths3, getPathsWithCustomize } = t.start;
   let doc = x;
-  doc = doc.replace(/__getPaths__/, getPaths2);
+  doc = doc.replace(
+    /__getPaths__/,
+    t.Var.hasCustomizeFiles ? getPathsWithCustomize : getPaths3
+  );
   return doc;
 };
 
@@ -437,7 +541,12 @@ var filenames_default2 = (x, t) => {
 
 // plop/generator/template/transform/prompts.ts
 var prompts_default = (x, t) => {
-  const { inputsPrompt, typesInput } = t.start;
+  const {
+    inputsPrompt,
+    typesInput,
+    customize_files,
+    customize_files_choice_types
+  } = t.start;
   let doc = x;
   doc = doc.replace(
     /__inputs__/,
@@ -447,16 +556,24 @@ var prompts_default = (x, t) => {
     /__typesInput__/,
     t.Var.hasInputs ? typesInput : ""
   );
+  doc = doc.replace(
+    /__customizeFiles__/g,
+    t.Var.hasCustomizeFiles ? customize_files : ""
+  );
+  doc = doc.replace(
+    /__customizeChoiceTypes__/g,
+    t.Var.hasCustomizeFiles ? customize_files_choice_types : ""
+  );
   return doc;
 };
 
 // plop/generator/template/transform/settings.ts
 var settings_default2 = (x, t) => {
-  const { cases: cases2, inputsSettings, commentsSettings } = t.start;
+  const { cases: cases3, inputsSettings, commentsSettings } = t.start;
   let doc = x;
   doc = doc.replace(
     /__cases__/,
-    t.Var.hasInputs ? cases2 : `
+    t.Var.hasInputs ? cases3 : `
 		name: '{{ snakeCase __ }}',`
   );
   doc = doc.replace(
@@ -473,7 +590,8 @@ var template_default = (x, t) => {
     importTransform,
     transform,
     inputsTransform,
-    hasInputs
+    hasInputs,
+    hasFileInputs
   } = t.start;
   let doc = x;
   doc = doc.replace(/__import_transform__/, importTransform);
@@ -485,6 +603,10 @@ var template_default = (x, t) => {
   doc = doc.replace(
     /__hasInputs__/,
     t.Var.hasInputs ? hasInputs : ""
+  );
+  doc = doc.replace(
+    /__hasFileInputs__/,
+    t.Var.hasInputs ? hasFileInputs : ""
   );
   return doc;
 };
@@ -504,9 +626,9 @@ var transform_default = (x, t) => {
 // plop/generator/template.ts
 var _Transform = class {
   static get start() {
-    let resolve2;
-    resolve2 = build_my_plop(settings_default(this.Var));
-    return resolve2;
+    let resolve3;
+    resolve3 = build_my_plop(settings_default(this.Var));
+    return resolve3;
   }
   static actions(doc) {
     return actions_default(doc, _Transform);
@@ -535,7 +657,8 @@ Transform.Var = {
   files: "",
   hasInputs: false,
   inputs: "",
-  name: ""
+  name: "",
+  hasCustomizeFiles: ""
 };
 
 // plop/generator/actions.ts
@@ -548,7 +671,13 @@ var getPaths = (whatIs, skip, path = "", value = "") => {
     templateFile: "plop/generator/template/generator/" + whatIs + ".hbs",
     path: `plop/plops/${name_folder}/` + path + filenames_default[whatIs](value ? value : "name"),
     transform: (doc) => Transform[whatIs](doc),
-    skip
+    skip: (answers) => {
+      if (typeof skip === "boolean")
+        return skip;
+      if (typeof skip === "string")
+        return answers[skip] ? false : "-SKIP " + whatIs;
+      return skip(answers);
+    }
   };
 };
 var getMany = (type) => {
@@ -568,19 +697,19 @@ var getMany = (type) => {
 };
 var resolve = [
   {
-    ...getPaths("actions", () => false)
+    ...getPaths("actions", false)
   },
   {
-    ...getPaths("filenames", () => false)
+    ...getPaths("filenames", false)
   },
   {
-    ...getPaths("prompts", () => false)
+    ...getPaths("prompts", false)
   },
   {
-    ...getPaths("settings", () => false)
+    ...getPaths("settings", false)
   },
   {
-    ...getPaths("template", () => false)
+    ...getPaths("template", false)
   },
   ...getMany("generator"),
   ...getMany("transform")
@@ -592,7 +721,7 @@ var prompts = [
   {
     type: "input",
     name: "name",
-    message: "qual o nome do plop?",
+    message: "Qual o nome do plop?",
     filter: (input, answers) => {
       Transform.Var.name = input;
       return input;
@@ -601,7 +730,7 @@ var prompts = [
   {
     type: "input",
     name: "files",
-    message: "quais arquivos voc\xEA criara",
+    message: "Quais arquivos voc\xEA criara?",
     filter: (input, answers) => {
       Transform.Var.files = input;
       input.split(",").forEach((_input, i) => {
@@ -613,8 +742,18 @@ var prompts = [
   },
   {
     type: "input",
+    name: "hasCustomizeFiles",
+    message: "Voc\xEA deseja customizar quais arquivos sera gerado ao fazer o plop? ( Yes/ Skip )",
+    filter: (input, answers) => {
+      Transform.Var.hasCustomizeFiles = input;
+      answers.hasCustomizeFiles = input;
+      return input;
+    }
+  },
+  {
+    type: "input",
     name: "inputs",
-    message: "quais inputs para cria\xE7\xE3o",
+    message: "Quais ser\xE3o o nome para cada input?",
     filter: (input, answers) => {
       Transform.Var.inputs = input;
       Transform.Var.hasInputs = !!input;
@@ -624,6 +763,171 @@ var prompts = [
 ];
 var prompts_default2 = prompts;
 
+// plop/plops/test_10/filenames.ts
+var myFiles2 = {
+  folder: "{{ snakeCase }}",
+  index: "{{ snakeCase __ }}",
+  styles: "{{ snakeCase __ }}"
+};
+var cases2 = cases_default("__", myFiles2);
+var cases_without_extension2 = Object.keys(cases2).reduce(
+  (p, k) => {
+    const str = cases2[k]().replace(/}}\.[^\s]*/g, "}}");
+    return { ...p, ["_" + k]: str };
+  },
+  {}
+);
+var filenames_default3 = {
+  ...cases2,
+  ...cases_default(cases_without_extension2)
+};
+
+// plop/plops/test_10/settings.ts
+var settings_default3 = (var_) => {
+  const cases3 = {
+    name: "{{ snakeCase __ }}",
+    colors: "{{ snakeCase __ }}",
+    props: "{{ snakeCase __ }}"
+  };
+  const c = cases_default("__", cases3);
+  const config = {
+    test: {
+      input: [var_.colors, "name"],
+      default: `assim olha ${c.name("name")}`
+    }
+  };
+  const resolve3 = {
+    custom: {},
+    input: {
+      name: var_.name,
+      colors: var_.colors,
+      props: var_.props
+    },
+    config
+  };
+  return resolve3;
+};
+
+// plop/plops/test_10/template/transform/index.ts
+var transform_default2 = (x, t) => {
+  let doc = x;
+  return doc;
+};
+
+// plop/plops/test_10/template/transform/styles.ts
+var styles_default = (x, t) => {
+  let doc = x;
+  return doc;
+};
+
+// plop/plops/test_10/template.ts
+var _Transform2 = class {
+  static get start() {
+    let resolve3;
+    resolve3 = build_my_plop(settings_default3(this.Var));
+    return resolve3;
+  }
+  static index(doc) {
+    return transform_default2(doc, _Transform2);
+  }
+  static styles(doc) {
+    return styles_default(doc, _Transform2);
+  }
+};
+var Transform2 = _Transform2;
+Transform2.Var = {
+  name: "",
+  colors: "",
+  props: "",
+  has_colors: false,
+  has_props: false,
+  has_index: false,
+  has_styles: false
+};
+
+// plop/plops/test_10/actions.ts
+var getPaths2 = (whatIs, skip, path = "", value = "") => {
+  const name_folder = filenames_default3.folder(
+    "n_a_m_e".replace(/_/g, "")
+  );
+  return {
+    type: "add",
+    templateFile: "plop/plops/$test_10/template/generator/" + whatIs + ".hbs",
+    path: `plop/plops/${name_folder}/` + path + filenames_default3[whatIs](value ? value : "name"),
+    transform: (doc) => Transform2[whatIs](doc),
+    skip: (answers) => {
+      if (typeof skip === "boolean")
+        return skip;
+      if (typeof skip === "string")
+        return answers[skip] ? false : "-SKIP " + whatIs;
+      return skip(answers);
+    }
+  };
+};
+var resolve2 = [
+  {
+    ...getPaths2("index", "has_index")
+  },
+  {
+    ...getPaths2("styles", "has_styles")
+  }
+];
+var actions_default3 = resolve2;
+
+// plop/plops/test_10/prompts.ts
+var prompts2 = [
+  {
+    type: "input",
+    name: "name",
+    message: "name: ",
+    filter: (input) => {
+      Transform2.Var.name = input;
+      return input;
+    }
+  },
+  {
+    type: "input",
+    name: "colors",
+    message: "colors: ",
+    filter: (input) => {
+      Transform2.Var.colors = input;
+      Transform2.Var.has_colors = !!input;
+      return input;
+    }
+  },
+  {
+    type: "input",
+    name: "props",
+    message: "props: ",
+    filter: (input) => {
+      Transform2.Var.props = input;
+      Transform2.Var.has_props = !!input;
+      return input;
+    }
+  },
+  {
+    type: "checkbox",
+    message: "Quais arquivos devem ser criados?",
+    name: "customizeFiles",
+    choices: [
+      "index",
+      "styles"
+    ],
+    filter: (input, answers) => {
+      if (input.indexOf("index") > -1) {
+        Transform2.Var.has_index = true;
+        answers.has_index = "true";
+      }
+      if (input.indexOf("styles") > -1) {
+        Transform2.Var.has_styles = true;
+        answers.has_styles = "true";
+      }
+      return input;
+    }
+  }
+];
+var prompts_default3 = prompts2;
+
 // plopfile.ts
 function plopfile_default(plop) {
   plop.setWelcomeMessage("Oque deseja criar?");
@@ -631,6 +935,11 @@ function plopfile_default(plop) {
     description: "cria\xE7\xE3o de geradores de plop",
     prompts: [...prompts_default2],
     actions: [...actions_default2]
+  });
+  plop.setGenerator("test", {
+    description: "test",
+    prompts: [...prompts_default3],
+    actions: [...actions_default3]
   });
 }
 export {

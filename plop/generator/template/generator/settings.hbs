@@ -27,7 +27,7 @@ export default (var_: Input) => {
   const c = Cases('__', cases) as ResolveCases
 
   const config = {__comments__
-  }
+  } satisfies PlopConf['config']
 
   const resolve: PlopConf = {
     custom: {},

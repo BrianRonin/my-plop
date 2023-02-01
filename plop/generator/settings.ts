@@ -1,6 +1,6 @@
 import { PlopConf } from 'plop/types/config'
-import Cases from '../utils/cases.js'
-import { Input } from './prompts.js'
+import Cases from '../utils/cases'
+import { Input } from './prompts'
 // ! only support camelCase, snakeCase, properCase, constantCase
 //*  camelCase: changeFormatToThis
 //*  snakeCase: change_format_to_this
@@ -36,13 +36,34 @@ export default (var_: Input) => {
       input: [var_.files.split(','), 'files'],
       default: `\n\t{\n\t\t...getPaths('${c.files(
         'files',
-      )}', () => false),\n\t},`,
+      )}', false)\n\t},`,
       spaces: {
         start: '{{}}',
         between: '{{}}',
         end: '{{}}',
         onlyOne: '{{}}',
       },
+    },
+    getPathsWithCustomize: {
+      input: [var_.files.split(','), 'files'],
+      default: `\n\t{\n\t\t...getPaths('${c.files(
+        'files',
+      )}', 'has_${c.files('files')}'),\n\t},`,
+      spaces: {
+        start: '{{}}',
+        between: '{{}}',
+        end: '{{}}',
+        onlyOne: '{{}}',
+      },
+      match: [
+        {
+          stages: {
+            stage_3(v) {
+              return v.replace('*{*{*', '{{')
+            },
+          },
+        },
+      ],
     },
     // ** Filenames
     fileNames: {
@@ -96,12 +117,22 @@ export default (var_: Input) => {
     },
     hasInputs: {
       input: [var_.inputs.split(','), 'inputs'],
-      default: `\n\t\thas${c.inputs('inputs')}: false,`,
+      default: `\n\t\thas_${c.inputs('inputs')}: false,`,
       spaces: {
         start: '{{}}',
         between: '{{}}',
         end: '{{}}',
         onlyOne: '{{}}',
+      },
+    },
+    hasFileInputs: {
+      input: [var_.files.split(','), 'files'],
+      default: `\n\t\thas_${c.files('files')}: false,`,
+      spaces: {
+        between: '{{}}',
+        end: '{{}}',
+        onlyOne: '{{}}',
+        start: '{{}}',
       },
     },
     // ** Settings
@@ -171,6 +202,63 @@ export default (var_: Input) => {
         end: '\n{{}}',
         onlyOne: '\n{{}}',
       },
+      match: [
+        {
+          key: 'has',
+          value: `\t${c.inputs('inputs')}: string`,
+        },
+      ],
+    },
+    // ? Customize files
+    customize_files_choice_types: {
+      input: [var_.files.split(','), 'files'],
+      default: `\n\thas_${c.files('files')}: boolean`,
+      spaces: {
+        between: '{{}}',
+        end: '{{}}',
+        onlyOne: '{{}}',
+        start: '{{}}',
+      },
+    },
+    customize_files_choices: {
+      input: [var_.files.split(','), 'files'],
+      default: `\n\t'${c.files('files')}'`,
+      spaces: {
+        between: '{{}},',
+        end: '{{}}',
+        onlyOne: '{{}}',
+        start: '{{}},',
+      },
+    },
+    customize_files_filter: {
+      input: [var_.files.split(','), 'files'],
+      default: `
+      if (input.indexOf('${c.files('files')}') > -1) {
+        Transform.Var.has_${c.files('files')} = true
+        answers.has_${c.files('files')} = 'true'
+      }`,
+      spaces: {
+        between: '{{}}',
+        end: '{{}}',
+        onlyOne: '{{}}',
+        start: '{{}}',
+      },
+    },
+    customize_files: {
+      input: [var_.files, 'name'],
+      default: `
+  {
+    type: 'checkbox',
+    message: 'Quais arquivos devem ser criados?',
+    name: 'customizeFiles',
+    choices: [{{ ...customize_files_choices }},
+    ],
+    filter: (input: string[], answers: Record<string, any>) => {
+      {{ ...customize_files_filter }}
+      return input
+    },
+  },
+      `,
     },
   } satisfies PlopConf['config']
 

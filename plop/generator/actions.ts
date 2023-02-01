@@ -3,7 +3,10 @@ import Transform from './template'
 
 const getPaths = (
   whatIs: keyof Omit<ResolveFiles, 'folder'>,
-  skip: () => any,
+  skip:
+    | string
+    | boolean
+    | ((answers: Record<string, string>) => any),
   path = '',
   value = '',
 ) => {
@@ -21,7 +24,12 @@ const getPaths = (
       path +
       filenames[whatIs](value ? value : 'na' + 'me'), //diretorio destiono
     transform: (doc: string) => Transform[whatIs](doc),
-    skip: skip,
+    skip: (answers: Record<string, string>) => {
+      if (typeof skip === 'boolean') return skip
+      if (typeof skip === 'string')
+        return answers[skip] ? false : '-SKIP ' + whatIs
+      return skip(answers)
+    },
   }
 }
 
@@ -45,19 +53,19 @@ const getMany = (type: keyof typeof filenames) => {
 
 const resolve = [
   {
-    ...getPaths('actions', () => false),
+    ...getPaths('actions', false),
   },
   {
-    ...getPaths('filenames', () => false),
+    ...getPaths('filenames', false),
   },
   {
-    ...getPaths('prompts', () => false),
+    ...getPaths('prompts', false),
   },
   {
-    ...getPaths('settings', () => false),
+    ...getPaths('settings', false),
   },
   {
-    ...getPaths('template', () => false),
+    ...getPaths('template', false),
   },
   ...getMany('generator'),
   ...getMany('transform'),

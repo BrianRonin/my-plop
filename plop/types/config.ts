@@ -2,19 +2,19 @@ type MatchConf = {
   /**
    * Escolha uma chave que sera o match para efetuar a alteração do valor
    */
-  key: string
+  key?: string
   /**
    * Valor retornado caso aconteca 'match' com a chave
    */
-  value: string
+  value?: string
   /**
    * Manupipule a saida da variavel enquanto esta sendo gerada
    */
   stages?: {
-    stage_0: (v: string) => string
-    stage_1: (v: string) => string
-    stage_2: (v: string) => string
-    stage_3: (v: string) => string
+    stage_0?: (v: string) => string
+    stage_1?: (v: string) => string
+    stage_2?: (v: string) => string
+    stage_3?: (v: string) => string
   }
 }
 

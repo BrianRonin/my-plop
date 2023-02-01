@@ -6,6 +6,7 @@ export default (x: string, t: typeof Transform) => {
     transform,
     inputsTransform,
     hasInputs,
+    hasFileInputs,
   } = t.start
   let doc = x
   doc = doc.replace(/__import_transform__/, importTransform)
@@ -17,6 +18,10 @@ export default (x: string, t: typeof Transform) => {
   doc = doc.replace(
     /__hasInputs__/,
     t.Var.hasInputs ? hasInputs : '',
+  )
+  doc = doc.replace(
+    /__hasFileInputs__/,
+    t.Var.hasInputs ? hasFileInputs : '',
   )
   return doc
 }

@@ -18,6 +18,7 @@ export default class Transform {
     hasInputs: false,
     inputs: '',
     name: '',
+    hasCustomizeFiles: '',
   }
 
   public static get start(): StartReturn {

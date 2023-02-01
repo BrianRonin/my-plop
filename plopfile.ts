@@ -5,6 +5,8 @@
 
 import actions_plop from './plop/generator/actions'
 import prompts_plop from './plop/generator/prompts'
+import actions_plop_test from './plop/plops/test_10/actions'
+import prompts_plop_test from './plop/plops/test_10/prompts'
 
 import { NodePlopAPI } from 'plop'
 
@@ -25,5 +27,10 @@ export default function (plop: NodePlopAPI) {
     description: 'criação de geradores de plop',
     prompts: [...(prompts_plop as any)],
     actions: [...actions_plop],
+  })
+  plop.setGenerator('test', {
+    description: 'test',
+    prompts: [...(prompts_plop_test as any)],
+    actions: [...actions_plop_test],
   })
 }
