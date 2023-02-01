@@ -17,7 +17,10 @@ import { Input } from './prompts.js'
 // ************* COMPONENTS ****************** //
 
 export default (var_: Input) => {
-  const cases = {__cases__
+  const cases = {
+    name: '{{ snakeCase __ }}',
+    props: '{{ snakeCase __ }}',
+    types: '{{ snakeCase __ }}',
   }
 
   type ResolveCases = {
@@ -26,13 +29,18 @@ export default (var_: Input) => {
 
   const c = Cases('__', cases) as ResolveCases
 
-  const config = {__comments__
+  const config = {
+    // ** index
+    // ** styles
+    // ** mock
   }
 
   const resolve: PlopConf = {
     custom: {},
     input: {
-      name: var_.name,__inputs__
+      name: var_.name,
+      props: var_.props,
+      types: var_.types,
     },
     config,
   }

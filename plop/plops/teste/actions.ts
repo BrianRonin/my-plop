@@ -13,7 +13,7 @@ const getPaths = (
   return {
     type: 'add',
     templateFile:
-      'plop/plops/${{ snakeCase name }}/template/generator/' +
+      'plop/plops/$teste/template/generator/' +
       whatIs +
       '.hbs',
     path:
@@ -25,5 +25,14 @@ const getPaths = (
   }
 }
 
-export default [__getPaths__
+export default [
+	{
+		...getPaths('index', () => false),
+	},
+	{
+		...getPaths('styles', () => false),
+	},
+	{
+		...getPaths('mock', () => false),
+	},
 ]

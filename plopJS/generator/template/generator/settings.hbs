@@ -1,7 +1,5 @@
-import { PlopConf } from '../../types/config.js'
-import Cases from '../../utils/cases.js'
-import { Input } from './prompts.js'
-
+import Cases from '../utils/cases.mjs'
+import file_name from './file_name.mjs'
 // ! only support camelCase, snakeCase, properCase, constantCase
 //*  camelCase: changeFormatToThis
 //*  snakeCase: change_format_to_this
@@ -16,29 +14,16 @@ import { Input } from './prompts.js'
 
 // ************* COMPONENTS ****************** //
 
-export default (var_: Input) => {
-  const cases = {__cases__
-  }
+export default (var_) => {
+  const c = Cases('__', {__cases__
+  })
 
-  type ResolveCases = {
-    [key in keyof typeof cases]: (name: string) => string
-  }
-
-  const c = Cases('__', cases) as ResolveCases
-
-  const config = {__comments__
-  }
-
-  const resolve: PlopConf = {
+  return {
     custom: {},
     input: {
       name: var_.name,__inputs__
     },
-    config,
-  }
-
-  //@ts-ignore
-  return resolve as {
-    [key in keyof typeof config]: string
+    config: {__comments__
+    },
   }
 }

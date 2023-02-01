@@ -1,20 +1,20 @@
-import build from '../config/formater.mjs'
-import config from './settings.mjs'__import_transform__
+import build from '../../config/formater'
+import config from './settings'
+import { Input } from './prompts'
+import { PlopConf } from '../../types/config'__import_transform__
+
+type StartReturn = ReturnType<typeof config>
 
 export default class Transform {
-  static var = {
+  public static Var: Input = {
     name: '',__inputs____hasInputs__
   }
 
-  static get start() {
+  public static get start(): StartReturn {
     let resolve
-    try {
-      resolve = build(
-        config(this.var),
-      )
-    } catch (e) {
-      resolve = e
-    }
+    //@ts-ignore
+    resolve = build(config(this.Var) as PlopConf)
+    //@ts-ignore
     return resolve
   }
 

@@ -1,0 +1,43 @@
+import file_name from './file_name.js'
+import TransformComponent from './template.js'
+
+const getPaths_component = (whatIs, skip) => {
+  const name_folder = file_name.folder(
+    'n_a_m_e'.replace(/_/g, ''),
+  )
+  return {
+    type: 'add',
+    templateFile:
+      'plop/plops/template_react/{{ isTs }}/generator/' +
+      whatIs +
+      '.hbs',
+    path: '{{ group }}'
+      ? `src/templates/{{ constantCase group }}/${name_folder}/` +
+        file_name[whatIs]('na' + 'me')
+      : `./src/templates/${name_folder}/` +
+        file_name[whatIs]('na' + 'me'), //diretorio destiono
+    transform: (doc) => TransformComponent[whatIs](doc),
+    skip: (answers) => {
+      if (typeof skip === 'boolean') return skip
+      return answers[skip] ? false : '-SKIP ' + whatIs
+    },
+  }
+}
+
+export default [
+  {
+    ...getPaths_component('stories', 'hasStorybook'),
+  },
+  {
+    ...getPaths_component('index', false),
+  },
+  {
+    ...getPaths_component('styles', false),
+  },
+  {
+    ...getPaths_component('mock', 'hasMock'),
+  },
+  {
+    ...getPaths_component('test', 'hasTest'),
+  },
+]

@@ -1,11 +1,11 @@
-import filenames, { ResolveFiles } from './filenames'
-import Transform from './template'
+import filenames from './filenames.mjs'
+import Transform from './template.mjs'
 
 const getPaths = (
-  whatIs: keyof Omit<ResolveFiles, 'folder'>,
-  skip: () => any,
+  whatIs,
+  skip,
   path = '',
-  value = '',
+  value = false,
 ) => {
   const name_folder = filenames.folder(
     'n_a_m_e'.replace(/_/g, ''),
@@ -20,7 +20,7 @@ const getPaths = (
       `plop/plops/${name_folder}/` +
       path +
       filenames[whatIs](value ? value : 'na' + 'me'), //diretorio destiono
-    transform: (doc: string) => Transform[whatIs](doc),
+    transform: (doc) => Transform[whatIs](doc),
     skip: skip,
   }
 }

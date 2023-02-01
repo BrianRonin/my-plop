@@ -1,6 +1,10 @@
 import _cases from '../../utils/cases'
 
-const myFiles = {__fileNames__
+const myFiles = {
+	folder: '{{ snakeCase }}',
+	index: '{{ snakeCase __ }}',
+	styles: '{{ snakeCase __ }}',
+	mock: '{{ snakeCase __ }}',
 }
 
 const cases = _cases('__', myFiles)

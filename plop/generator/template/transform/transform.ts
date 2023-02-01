@@ -1,4 +1,4 @@
-import Transform from '../../template'
+import Transform from 'plop/generator/template'
 
 export default (x: string, t: typeof Transform) => {
   // const {  } = t.start

@@ -1,14 +1,21 @@
 {
   "name": "my_plop",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "pnpm tsup plopfile.ts --format esm"
+  },
   "devDependencies": {
+    "@swc/core": "^1.3.32",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "plop": "^3.1.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "tsup": "^6.5.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "typescript": "^4.9.5"
+  }
 }
