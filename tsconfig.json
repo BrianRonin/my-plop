@@ -19,5 +19,5 @@
     "baseUrl": "./"
   },
   "exclude": ["node_modules"],
-  "include": ["./plopTs", "plopfile.ts"]
+  "include": ["./plopTs", "plop/plopfile.ts"]
 }

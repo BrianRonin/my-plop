@@ -2,7 +2,7 @@ type MatchConf = {
   /**
    * Escolha uma chave que sera o match para efetuar a alteração do valor
    */
-  key?: string
+  key?: string | RegExp
   /**
    * Valor retornado caso aconteca 'match' com a chave
    */

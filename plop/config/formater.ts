@@ -1,6 +1,6 @@
 import case_modifiers from '../utils/case_modifiers'
 import format_hooks from './format_hooks.js'
-import plop_config_components from '../plops/component_react/settings.js'
+// import plop_config_components from '../plops/component_react/settings'
 import handle_spaces from '../utils/handle_spaces'
 import { PlopConf, PlopVariable } from '../types/config'
 
@@ -115,7 +115,7 @@ function formater(
   obj.match &&
     obj.match.map((match) => {
       keys_of_match.push(match.key)
-      if (obj.input.match(match.key)) {
+      if (match.key && obj.input.match(match.key)) {
         match.value &&
           typeof match.value === 'string' &&
           (resolve = match.value)

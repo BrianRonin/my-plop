@@ -1,6 +1,13 @@
 import _cases from '../../utils/cases'
 
-const myFiles = {__fileNames__
+const myFiles = {
+  folder: '{{ snakeCase __ }}',
+  index: 'index.tsx',
+  mock: 'mock.tsx',
+  stories: 'stories.tsx',
+  styles: 'styles.tsx',
+  test: 'test.tsx',
+  types: 'types.tsx',
 }
 
 const cases = _cases('__', myFiles)
@@ -27,7 +34,6 @@ type ResolveFilesWhioutExtension = {
     name: string,
   ) => string
 }
-
 
 export default {
   ...cases,

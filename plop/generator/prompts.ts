@@ -1,5 +1,5 @@
 import case_modifiers from '../utils/case_modifiers'
-import Transform from './template.js'
+import Transform from './template'
 import { PlopGeneratorConfig } from 'plop'
 
 export type Input = {

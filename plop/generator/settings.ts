@@ -68,11 +68,11 @@ export default (var_: Input) => {
     // ** Filenames
     fileNames: {
       input: [var_.files.split(','), 'files'],
-      default: `\n\t${c.files(
+      default: `\n\t${c.files('files')}: '${c.files(
         'files',
-      )}: '{{ snakeCase __ }}',`,
+      )}.ts',`,
       spaces: {
-        start: `\n\tfolder: '{{ snakeCase }}',{{}}`,
+        start: `\n\tfolder: '{{ snakeCase __ }}',{{}}`,
         between: '{{}}',
         end: '{{}}',
         onlyOne: '{{}}',

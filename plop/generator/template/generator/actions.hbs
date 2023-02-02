@@ -16,11 +16,11 @@ const getPaths = (
   return {
     type: 'add',
     templateFile:
-      'plop/plops/${{ snakeCase name }}/template/generator/' +
+      'plop/plops/{{ snakeCase name }}/template/generator/' +
       whatIs +
       '.hbs',
     path:
-      `plop/plops/${name_folder}/` +
+      `plop/ouput/${name_folder}/` +
       path +
       filenames[whatIs](value ? value : 'na' + 'me'), //diretorio destiono
     transform: (doc: string) => Transform[whatIs](doc),

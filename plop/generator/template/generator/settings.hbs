@@ -29,16 +29,20 @@ export default (var_: Input) => {
   const config = {__comments__
   } satisfies PlopConf['config']
 
+  const custom = {}
+
   const resolve: PlopConf = {
-    custom: {},
     input: {
       name: var_.name,__inputs__
     },
+    custom,
     config,
   }
 
   //@ts-ignore
   return resolve as {
     [key in keyof typeof config]: string
+  } & {
+    custom: typeof custom
   }
 }
