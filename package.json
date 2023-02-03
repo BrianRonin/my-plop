@@ -1,6 +1,6 @@
 {
   "name": "my-plopjs",
-  "version": "1.1.14",
+  "version": "1.1.23",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
@@ -8,10 +8,11 @@
     "update-plop": "node ./scripts/refresh-plopfile.js",
     "postinstall": "node ./scripts/copy-plopjs",
     "postupdate": "node ./scripts/copy-plopjs",
-    "preupdate": "node ./scripts/copy-plopjs"
+    "preupdate": "node ./scripts/copy-plopjs",
+    "cpPlop": "node ./node_modules/.bin/cp-plopfile"
   },
   "bin": {
-    "cp-plopfile": "./copy-plopjs.js"
+    "cp-plopfile": "./scripts/copy-plopjs.js"
   },
   "devDependencies": {
     "@swc/core": "^1.3.32",
@@ -27,6 +28,7 @@
   },
   "dependencies": {
     "fs": "0.0.1-security",
+    "ncp": "^2.0.0",
     "plop": "^3.1.1"
   }
 }
