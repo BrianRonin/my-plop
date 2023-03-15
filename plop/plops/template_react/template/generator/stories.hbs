@@ -1,0 +1,22 @@
+import type {
+  Meta,
+  StoryObj,
+} from '@storybook/react'
+
+import { __imports__ } from '.'
+
+const meta = {
+  title: 'Components/__title__',
+  component: __component__,
+  tags: ['autodocs'],
+  args: __mock__.default,
+  parameters: {
+    layout: 'centered',
+    background: null,
+  },
+} satisfies Meta<typeof __component__>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Base: Story = {}

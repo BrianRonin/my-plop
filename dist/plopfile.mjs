@@ -145,14 +145,14 @@ function build_my_plop(obj) {
       single_inputs[input] = obj.input[input];
     }
   });
-  const resolve3 = format_hooks(
+  const resolve4 = format_hooks(
     _formater(obj.config, single_inputs)
   );
-  obj.custom && (resolve3.custom = obj.custom);
-  return resolve3;
+  obj.custom && (resolve4.custom = obj.custom);
+  return resolve4;
 }
 function _formater(obj, single_inputs) {
-  const resolve3 = {};
+  const resolve4 = {};
   Object.keys(obj).forEach((k) => {
     if (Array.isArray(obj[k].input[0])) {
       let outputs = [];
@@ -170,8 +170,8 @@ function _formater(obj, single_inputs) {
         );
         _output && outputs.push(_output);
       });
-      resolve3[k] = outputs.length > 0 ? outputs.reduce((prev, output, index) => {
-        const resolve4 = handle_spaces_default(
+      resolve4[k] = outputs.length > 0 ? outputs.reduce((prev, output, index) => {
+        const resolve5 = handle_spaces_default(
           index,
           outputs.length,
           outputs,
@@ -192,10 +192,10 @@ function _formater(obj, single_inputs) {
             output
           )
         );
-        return [...prev, resolve4];
+        return [...prev, resolve5];
       }, []).join("") : "";
     } else {
-      resolve3[k] = formater(
+      resolve4[k] = formater(
         {
           ...obj[k],
           input: obj[k].input[0]
@@ -204,11 +204,11 @@ function _formater(obj, single_inputs) {
       );
     }
   });
-  obj.custom && (resolve3.custom = obj.custom);
-  return resolve3;
+  obj.custom && (resolve4.custom = obj.custom);
+  return resolve4;
 }
 function formater(obj, inputs) {
-  let resolve3;
+  let resolve4;
   let stages = {
     stage_0: (x) => x,
     stage_1: (x) => x,
@@ -216,11 +216,11 @@ function formater(obj, inputs) {
     stage_3: (x) => x
   };
   let keys_of_match = [];
-  resolve3 = obj.default ?? "";
+  resolve4 = obj.default ?? "";
   obj.match && obj.match.map((match) => {
     keys_of_match.push(match.key);
     if (match.key && obj.input.match(match.key)) {
-      match.value && typeof match.value === "string" && (resolve3 = match.value);
+      match.value && typeof match.value === "string" && (resolve4 = match.value);
       match.stages && (stages = {
         ...stages,
         ...match.stages
@@ -235,31 +235,31 @@ function formater(obj, inputs) {
         `{{ ${modifier} ${input} }}`,
         "g"
       );
-      if (resolve3.match(regex)) {
+      if (resolve4.match(regex)) {
         const output = stages.stage_2(
           func(
             stages.stage_1(stages.stage_0(inputs[input]))
           )
         );
-        resolve3 = stages.stage_3(
-          resolve3.replace(regex, output)
+        resolve4 = stages.stage_3(
+          resolve4.replace(regex, output)
         );
       }
     }
   });
-  return resolve3;
+  return resolve4;
 }
 
 // plop/generator/settings.ts
 var settings_default = (var_) => {
-  const cases3 = {
+  const cases4 = {
     name: "{{ snakeCase __ }}",
     files: "{{ snakeCase __ }}",
     inputs: "{{ snakeCase __ }}",
     cases: "{{ snakeCase __ }}",
     transform_files: "transform_{{ snakeCase __ }}"
   };
-  const c = cases_default("__", cases3);
+  const c = cases_default("__", cases4);
   const config = {
     getPaths: {
       input: [var_.files.split(","), "files"],
@@ -507,7 +507,7 @@ import ${c.transform_files(
       `
     }
   };
-  const resolve3 = {
+  const resolve4 = {
     custom: {},
     input: {
       name: var_.name,
@@ -516,17 +516,17 @@ import ${c.transform_files(
     },
     config
   };
-  return resolve3;
+  return resolve4;
 };
 
 // plop/generator/template/transform/actions.ts
 var actions_default = (x, t) => {
   console.log(t.start);
-  const { getPaths: getPaths3, getPathsWithCustomize } = t.start;
+  const { getPaths: getPaths4, getPathsWithCustomize } = t.start;
   let doc = x;
   doc = doc.replace(
     /__getPaths__/,
-    t.Var.hasCustomizeFiles ? getPathsWithCustomize : getPaths3
+    t.Var.hasCustomizeFiles ? getPathsWithCustomize : getPaths4
   );
   return doc;
 };
@@ -569,11 +569,11 @@ var prompts_default = (x, t) => {
 
 // plop/generator/template/transform/settings.ts
 var settings_default2 = (x, t) => {
-  const { cases: cases3, inputsSettings, commentsSettings } = t.start;
+  const { cases: cases4, inputsSettings, commentsSettings } = t.start;
   let doc = x;
   doc = doc.replace(
     /__cases__/,
-    t.Var.hasInputs ? cases3 : `
+    t.Var.hasInputs ? cases4 : `
 		name: '{{ snakeCase __ }}',`
   );
   doc = doc.replace(
@@ -626,9 +626,9 @@ var transform_default = (x, t) => {
 // plop/generator/template.ts
 var _Transform = class {
   static get start() {
-    let resolve3;
-    resolve3 = build_my_plop(settings_default(this.Var));
-    return resolve3;
+    let resolve4;
+    resolve4 = build_my_plop(settings_default(this.Var));
+    return resolve4;
   }
   static actions(doc) {
     return actions_default(doc, _Transform);
@@ -765,11 +765,11 @@ var prompts_default2 = prompts;
 
 // plop/plops/component_react/settings.ts
 var settings_default3 = (var_) => {
-  const cases3 = {
+  const cases4 = {
     component: "{{ properCase __ }}",
     prop: "{{ camelCase __ }}"
   };
-  const c = cases_default("__", cases3);
+  const c = cases_default("__", cases4);
   const Type = (x) => `T${var_.numbering}${c.component(x)}`;
   const Mock = (x) => `M${var_.numbering}${c.component(x)}`;
   const Component = (x) => `C${var_.numbering}${c.component(x)}`;
@@ -854,7 +854,7 @@ var settings_default3 = (var_) => {
   const custom = {
     css_in_js: css_in_js[1]
   };
-  const resolve3 = {
+  const resolve4 = {
     input: {
       name: var_.name,
       numbering: var_.numbering,
@@ -863,7 +863,7 @@ var settings_default3 = (var_) => {
     custom,
     config
   };
-  return resolve3;
+  return resolve4;
 };
 
 // plop/plops/component_react/template/transform/index.ts
@@ -976,9 +976,9 @@ var types_default = (x, t) => {
 // plop/plops/component_react/template.ts
 var _Transform2 = class {
   static get start() {
-    let resolve3;
-    resolve3 = build_my_plop(settings_default3(this.Var));
-    return resolve3;
+    let resolve4;
+    resolve4 = build_my_plop(settings_default3(this.Var));
+    return resolve4;
   }
   static state(onlyChield, onlyArg, both, anything) {
     const isFunc = (x) => typeof x === "function" ? x() : x;
@@ -1202,6 +1202,433 @@ var resolve2 = [
 ];
 var actions_default3 = resolve2;
 
+// plop/plops/template_react/settings.ts
+var settings_default4 = (var_) => {
+  const cases4 = {
+    component: "{{ properCase __ }}",
+    prop: "{{ camelCase __ }}"
+  };
+  const c = cases_default("__", cases4);
+  const Type = (x) => `T${c.component(x)}`;
+  const Mock = (x) => `M${c.component(x)}`;
+  const Component = (x) => `C${c.component(x)}`;
+  const Style = (x) => `S${c.component(x)}`;
+  const config = {
+    Type: {
+      input: [var_.name, "name"],
+      default: Type("name")
+    },
+    Mock: {
+      input: [var_.name, "name"],
+      default: Mock("name")
+    },
+    Component: {
+      input: [var_.name, "name"],
+      default: Component("name")
+    },
+    Style: {
+      input: [var_.name, "name"],
+      default: Style("name")
+    },
+    propsArg: {
+      input: [var_.props.split(","), "props"],
+      default: c.prop("props"),
+      match: [
+        {
+          key: "#",
+          value: c.component("props")
+        }
+      ],
+      spaces: {
+        start: "{{}}, ",
+        between: "{{}}, ",
+        end: "{{}}",
+        onlyOne: "{{}}"
+      }
+    },
+    propsType: {
+      input: [var_.props.split(","), "props"],
+      default: c.prop("props") + ": any",
+      match: [
+        {
+          key: /_/,
+          stages: {
+            stage_3: (x) => {
+              return x.match(/\?/g) ? x : x.replace(":", "?:");
+            }
+          }
+        },
+        {
+          key: /#/,
+          value: `${c.component("props")}: ${Type(
+            "props"
+          )}`
+        }
+      ],
+      spaces: {
+        start: "{{}}\n",
+        between: "	{{}}\n",
+        end: "	{{}}",
+        onlyOne: "{{}}"
+      }
+    },
+    mock: {
+      input: [var_.props.split(","), "props"],
+      default: `// ${c.prop("props")}: `,
+      match: [
+        {
+          key: "#",
+          value: `// ${c.component("props")}: C`
+        }
+      ],
+      spaces: {
+        start: "\n	{{}}, \n",
+        between: "	{{}}, \n",
+        end: "	{{}},",
+        onlyOne: "\n	{{}}, \n"
+      }
+    }
+  };
+  const css_in_js = ["Styled Components", "Emotion"];
+  const custom = {
+    css_in_js: css_in_js[1]
+  };
+  const resolve4 = {
+    input: {
+      name: var_.name,
+      group: var_.group
+    },
+    custom,
+    config
+  };
+  return resolve4;
+};
+
+// plop/plops/template_react/template/transform/index.ts
+var transform_default3 = (x, t) => {
+  let { propsArg, propsType, Type } = t.start;
+  let doc = x;
+  doc = x.replace(
+    /__importTypeFile__/,
+    t.Var.has_types ? `import * as T from './types'` : ""
+  );
+  doc = doc.replace(
+    /__exportTypeFile__/,
+    t.Var.has_types ? `export * as ${Type} from './types'` : ""
+  );
+  doc = doc.replace(
+    /__propsType__/,
+    t.Var.has_types ? "" : `export interface ${Type}` + t.state(
+      "{\n	children: React.ReactNode\n}",
+      "{ " + propsType + " }",
+      "{\n	children: React.ReactNode\n	" + propsType + "\n}",
+      "{\n	//\n}"
+    )
+  );
+  doc = doc.replace(
+    /__props__/,
+    t.state(
+      "{ children }: " + t.Var.has_types ? "T.Props" : Type,
+      "{ " + propsArg + " }: " + (t.Var.has_types ? "T.Props" : Type),
+      "{ children, " + propsArg + " }: " + (t.Var.has_types ? "T.Props" : Type),
+      ""
+    )
+  );
+  doc = doc.replace(
+    /__return__/,
+    t.state(
+      "(\n		<S.Main>\n			{children}\n		</S.Main>\n	)",
+      "(\n		<S.Main></S.Main>\n	)",
+      "(\n		<S.Main>\n			{children}\n		</S.Main>\n	)",
+      "(\n		<S.Main></S.Main>\n	)"
+    )
+  );
+  return doc;
+};
+
+// plop/plops/template_react/template/transform/mock.ts
+var mock_default2 = (x, t) => {
+  const { mock } = t.start;
+  let doc = x;
+  doc = doc.replace(
+    /__mock__/,
+    t.state(
+      "\n	children: ':D',",
+      mock,
+      "\n	children: ':D'," + mock,
+      "\n	//"
+    )
+  );
+  return doc;
+};
+
+// plop/plops/template_react/template/transform/stories.ts
+var stories_default2 = (x, t) => {
+  const { Component, Mock } = t.start;
+  let doc = x;
+  doc = doc.replace(
+    /__imports__/,
+    t.Var.has_mock ? `${Component}, ${Mock}` : `${Component}`
+  );
+  doc = doc.replace(
+    /__title__/,
+    t.Var.has_group ? `${case_modifiers_default.properCase(
+      t.Var.group
+    )}/${Component}` : Component
+  );
+  doc = doc.replace(/__mock__/g, Mock);
+  doc = doc.replace(/__component__/g, Component);
+  return doc;
+};
+
+// plop/plops/template_react/template/transform/styles.ts
+var styles_default2 = (x, t) => {
+  let doc = x;
+  return doc;
+};
+
+// plop/plops/template_react/template/transform/test.ts
+var test_default2 = (x, t) => {
+  const { Component } = t.start;
+  let doc = x;
+  doc = doc.replace(/__component__/g, Component);
+  return doc;
+};
+
+// plop/plops/template_react/template/transform/types.ts
+var types_default2 = (x, t) => {
+  const { Type, propsType } = t.start;
+  let doc = x;
+  doc = doc.replace(
+    /__propsType__/,
+    t.state(
+      "{\n	children: React.ReactNode\n}",
+      "{ " + propsType + " }",
+      "{\n	children: React.ReactNode\n	" + propsType + "\n}",
+      "{\n	//\n}"
+    )
+  );
+  return doc;
+};
+
+// plop/plops/template_react/template.ts
+var _Transform3 = class {
+  static get start() {
+    let resolve4;
+    resolve4 = build_my_plop(settings_default4(this.Var));
+    return resolve4;
+  }
+  static state(onlyChield, onlyArg, both, anything) {
+    const isFunc = (x) => typeof x === "function" ? x() : x;
+    return this.Var.has_chield || this.Var.props ? this.Var.has_chield && this.Var.props ? isFunc(both) : this.Var.props ? isFunc(onlyArg) : isFunc(onlyChield) : isFunc(anything);
+  }
+  static index(doc) {
+    return transform_default3(doc, _Transform3);
+  }
+  static mock(doc) {
+    return mock_default2(doc, _Transform3);
+  }
+  static stories(doc) {
+    return stories_default2(doc, _Transform3);
+  }
+  static styles(doc) {
+    return styles_default2(doc, _Transform3);
+  }
+  static test(doc) {
+    return test_default2(doc, _Transform3);
+  }
+  static types(doc) {
+    return types_default2(doc, _Transform3);
+  }
+};
+var Transform3 = _Transform3;
+Transform3.Var = {
+  name: "",
+  group: "",
+  html_element: "div",
+  props: "",
+  has_group: false,
+  has_html_element: false,
+  has_props: false,
+  has_turbo_repo: false,
+  has_index: false,
+  has_mock: false,
+  has_stories: false,
+  has_styles: false,
+  has_test: false,
+  has_types: false,
+  has_chield: false
+};
+
+// plop/plops/template_react/prompts.ts
+var prompts3 = [
+  {
+    type: "input",
+    name: "name",
+    message: "Nome:  ",
+    filter: (input) => {
+      Transform3.Var.name = input;
+      return input;
+    }
+  },
+  {
+    type: "input",
+    name: "group",
+    message: "Grupo: ",
+    filter: (input) => {
+      Transform3.Var.group = input;
+      Transform3.Var.has_group = !!input;
+      return input;
+    }
+  },
+  {
+    type: "input",
+    name: "html_element",
+    message: "html_element: ",
+    filter: (input) => {
+      Transform3.Var.html_element = input;
+      Transform3.Var.has_html_element = !!input;
+      return input;
+    }
+  },
+  {
+    type: "input",
+    name: "has_chield",
+    message: "O componente tem children? ( y/ skip ) ",
+    filter: (input) => {
+      Transform3.Var.has_chield = !!input;
+      return input;
+    }
+  },
+  {
+    type: "input",
+    name: "has_turbo_repo",
+    message: "Preset TurboRepo? ( y/ skip ) ",
+    filter: (input) => {
+      Transform3.Var.has_turbo_repo = !!input;
+      return input;
+    }
+  },
+  {
+    type: "props",
+    name: "props",
+    message: "props: ",
+    filter: (input) => {
+      Transform3.Var.props = input;
+      Transform3.Var.has_props = !!input;
+      return input;
+    }
+  },
+  {
+    type: "checkbox",
+    message: "Quais arquivos devem ser criados?",
+    name: "customize_files",
+    choices: [
+      "index",
+      "mock",
+      "stories",
+      "styles",
+      "test",
+      "types"
+    ],
+    filter: (input, answers) => {
+      if (input.indexOf("index") > -1) {
+        Transform3.Var.has_index = true;
+        answers.has_index = "true";
+      }
+      if (input.indexOf("mock") > -1) {
+        Transform3.Var.has_mock = true;
+        answers.has_mock = "true";
+      }
+      if (input.indexOf("stories") > -1) {
+        Transform3.Var.has_stories = true;
+        answers.has_stories = "true";
+      }
+      if (input.indexOf("styles") > -1) {
+        Transform3.Var.has_styles = true;
+        answers.has_styles = "true";
+      }
+      if (input.indexOf("test") > -1) {
+        Transform3.Var.has_test = true;
+        answers.has_test = "true";
+      }
+      if (input.indexOf("types") > -1) {
+        Transform3.Var.has_types = true;
+        answers.has_types = "true";
+      }
+      return input;
+    }
+  }
+];
+var prompts_default4 = prompts3;
+
+// plop/plops/template_react/filenames.ts
+var myFiles3 = {
+  folder: "{{ snakeCase __ }}",
+  index: "index.tsx",
+  mock: "mock.tsx",
+  stories: "stories.tsx",
+  styles: "styles.tsx",
+  test: "test.tsx",
+  types: "types.tsx"
+};
+var cases3 = cases_default("__", myFiles3);
+var cases_without_extension3 = Object.keys(cases3).reduce(
+  (p, k) => {
+    const str = cases3[k]().replace(/}}\.[^\s]*/g, "}}");
+    const _str = cases3[k]().replace(/\.[^\s]*/g, "");
+    if (cases3[k]().match("}}")) {
+      return { ...p, ["_" + k]: str };
+    } else {
+      return { ...p, ["_" + k]: _str };
+    }
+  },
+  {}
+);
+var filenames_default4 = {
+  ...cases3,
+  ...cases_default(cases_without_extension3)
+};
+
+// plop/plops/template_react/actions.ts
+var getPaths3 = (whatIs, skip) => {
+  const name_folder = "{{ properCase name }}";
+  return {
+    type: "add",
+    templateFile: "plop/plops/component_react/template/generator/" + whatIs + ".hbs",
+    path: "{{ group }}" ? `src/templates/{{ properCase group }}/${name_folder}/` + filenames_default4[whatIs]("") : `./src/templates/${name_folder}/` + filenames_default4[whatIs]("name"),
+    transform: (doc) => Transform3[whatIs](doc),
+    skip: (answers) => {
+      if (typeof skip === "boolean")
+        return skip;
+      if (typeof skip === "string")
+        return answers[skip] ? false : "-SKIP " + whatIs;
+      return skip(answers);
+    }
+  };
+};
+var resolve3 = [
+  {
+    ...getPaths3("index", "has_index")
+  },
+  {
+    ...getPaths3("mock", "has_mock")
+  },
+  {
+    ...getPaths3("stories", "has_stories")
+  },
+  {
+    ...getPaths3("styles", "has_styles")
+  },
+  {
+    ...getPaths3("test", "has_test")
+  },
+  {
+    ...getPaths3("types", "has_types")
+  }
+];
+var actions_default4 = resolve3;
+
 // plop/plopfile.ts
 function plopfile_default(plop) {
   plop.setWelcomeMessage("Oque deseja criar?");
@@ -1209,6 +1636,11 @@ function plopfile_default(plop) {
     description: "cria\xE7\xE3o de componentes react com js/ts",
     prompts: [...prompts_default3],
     actions: [...actions_default3]
+  });
+  plop.setGenerator("template react", {
+    description: "cria\xE7\xE3o de templates react com js/ts",
+    prompts: [...prompts_default4],
+    actions: [...actions_default4]
   });
   plop.setGenerator("plop", {
     description: "cria\xE7\xE3o de geradores de plop",
