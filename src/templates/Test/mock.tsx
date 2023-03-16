@@ -1,8 +1,8 @@
 import { Props } from './types'
 
 const mock: Props = {
-	// x: , 
-	// y: ,
+  // x: ,
+  // y: ,
 }
 
 export default mock
