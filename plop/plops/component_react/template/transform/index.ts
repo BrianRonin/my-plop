@@ -32,20 +32,33 @@ export default (x: string, t: typeof Transform) => {
             '{\n\t' + '//\n}',
           ),
   )
-  // *** modify ARG
+  // *** modify PROPS
   doc = doc.replace(
     /__props__/,
     t.state(
-      '{ children }: ' + t.Var.has_types ? 'T.Props' : Type,
+      '{ children' +
+        (t.Var.has_presets
+          ? ', styles, stylesPreset'
+          : '' + ' }: ') +
+        (t.Var.has_types ? 'T.Props' : Type),
       '{ ' +
         propsArg +
+        (t.Var.has_presets
+          ? ', styles, stylesPreset'
+          : '') +
         ' }: ' +
         (t.Var.has_types ? 'T.Props' : Type),
       '{ children, ' +
         propsArg +
+        (t.Var.has_presets
+          ? ', styles, stylesPreset'
+          : '') +
         ' }: ' +
         (t.Var.has_types ? 'T.Props' : Type),
-      '',
+      '{ ' +
+        (t.Var.has_presets ? 'styles, stylesPreset' : '') +
+        ' }: ' +
+        (t.Var.has_types ? 'T.Props' : Type),
     ),
   )
   // *** modfy RETURN
@@ -57,6 +70,26 @@ export default (x: string, t: typeof Transform) => {
       '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
       '(\n\t\t<S.Main></S.Main>\n\t)',
     ),
+  )
+
+  // *** modify PRESETS
+  doc = doc.replace(
+    /__importPresets__/,
+    t.Var.has_presets
+      ? `import { useTheme } from '@emotion/react'\nimport Presets from './presets.css'`
+      : '',
+  )
+
+  doc = doc.replace(
+    /__usePresets__/,
+    t.Var.has_presets
+      ? `
+    const theme = useTheme()
+    const Styles: T.Styles = {
+    ...Presets(theme)[stylesPreset ?? 'default'],
+    ...styles,
+}\n`
+      : '',
   )
 
   return doc

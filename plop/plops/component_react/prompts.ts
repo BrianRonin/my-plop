@@ -16,6 +16,7 @@ export type Input = {
   has_test: boolean
   has_types: boolean
   has_turbo_repo: boolean
+  has_presets: boolean
   props: string
   has_props: boolean
   has_chield: boolean
@@ -100,6 +101,7 @@ const prompts: Partial<PlopGeneratorConfig['prompts']> = [
       'styles',
       'test',
       'types',
+      'presets',
     ],
     filter: (
       input: string[],
@@ -128,6 +130,10 @@ const prompts: Partial<PlopGeneratorConfig['prompts']> = [
       if (input.indexOf('types') > -1) {
         Transform.Var.has_types = true
         answers.has_types = 'true'
+      }
+      if (input.indexOf('presets') > -1) {
+        Transform.Var.has_presets = true
+        answers.has_presets = 'true'
       }
       return input
     },

@@ -8,6 +8,7 @@ import transform_stories from './template/transform/stories'
 import transform_styles from './template/transform/styles'
 import transform_test from './template/transform/test'
 import transform_type from './template/transform/types'
+import transform_presets from './template/transform/presets'
 
 type StartReturn = ReturnType<typeof config>
 
@@ -30,6 +31,7 @@ export default class Transform {
     has_test: false,
     has_types: false,
     has_chield: false,
+    has_presets: false,
   }
 
   public static get start(): StartReturn {
@@ -79,5 +81,9 @@ export default class Transform {
 
   static types(doc: string) {
     return transform_type(doc, Transform)
+  }
+
+  static presets(doc: string) {
+    return transform_presets(doc, Transform)
   }
 }

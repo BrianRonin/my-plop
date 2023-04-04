@@ -7,10 +7,14 @@ export default (x: string, t: typeof Transform) => {
   doc = doc.replace(
     /__mock__/,
     t.state(
-      "\n\tchildren: ':D',",
-      mock,
-      "\n\tchildren: ':D'," + mock,
-      '\n\t//',
+      "\n\tchildren: ':D'," +
+        (t.Var.has_presets ? '\n\tstyles: {},' : ''),
+      mock + (t.Var.has_presets ? '\n\tstyles: {},' : ''),
+      "\n\tchildren: ':D'," +
+        mock +
+        (t.Var.has_presets ? '\n\tstyles: {},' : ''),
+      '\n\t//' +
+        (t.Var.has_presets ? '\n\tstyles: {},' : ''),
     ),
   )
   return doc

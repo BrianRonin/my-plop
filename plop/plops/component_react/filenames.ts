@@ -8,6 +8,7 @@ const myFiles = {
   styles: 'styles.tsx',
   test: 'test.tsx',
   types: 'types.tsx',
+  presets: 'presets.css.tsx',
 }
 
 const cases = _cases('__', myFiles)

@@ -50,6 +50,9 @@ const resolve = [
   {
     ...getPaths('types', 'has_types'),
   },
+  {
+    ...getPaths('presets', 'has_presets'),
+  },
 ]
 
 export default resolve

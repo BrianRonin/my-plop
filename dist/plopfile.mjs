@@ -890,10 +890,10 @@ var transform_default2 = (x, t) => {
   doc = doc.replace(
     /__props__/,
     t.state(
-      "{ children }: " + t.Var.has_types ? "T.Props" : Type,
-      "{ " + propsArg + " }: " + (t.Var.has_types ? "T.Props" : Type),
-      "{ children, " + propsArg + " }: " + (t.Var.has_types ? "T.Props" : Type),
-      ""
+      "{ children" + (t.Var.has_presets ? ", styles, stylesPreset" : " }: ") + (t.Var.has_types ? "T.Props" : Type),
+      "{ " + propsArg + (t.Var.has_presets ? ", styles, stylesPreset" : "") + " }: " + (t.Var.has_types ? "T.Props" : Type),
+      "{ children, " + propsArg + (t.Var.has_presets ? ", styles, stylesPreset" : "") + " }: " + (t.Var.has_types ? "T.Props" : Type),
+      "{ " + (t.Var.has_presets ? "styles, stylesPreset" : "") + " }: " + (t.Var.has_types ? "T.Props" : Type)
     )
   );
   doc = doc.replace(
@@ -905,6 +905,21 @@ var transform_default2 = (x, t) => {
       "(\n		<S.Main></S.Main>\n	)"
     )
   );
+  doc = doc.replace(
+    /__importPresets__/,
+    t.Var.has_presets ? `import { useTheme } from '@emotion/react'
+import Presets from './presets.css'` : ""
+  );
+  doc = doc.replace(
+    /__usePresets__/,
+    t.Var.has_presets ? `
+    const theme = useTheme()
+    const Styles: T.Styles = {
+    ...Presets(theme)[stylesPreset ?? 'default'],
+    ...styles,
+}
+` : ""
+  );
   return doc;
 };
 
@@ -915,10 +930,10 @@ var mock_default = (x, t) => {
   doc = doc.replace(
     /__mock__/,
     t.state(
-      "\n	children: ':D',",
-      mock,
-      "\n	children: ':D'," + mock,
-      "\n	//"
+      "\n	children: ':D'," + (t.Var.has_presets ? "\n	styles: {}," : ""),
+      mock + (t.Var.has_presets ? "\n	styles: {}," : ""),
+      "\n	children: ':D'," + mock + (t.Var.has_presets ? "\n	styles: {}," : ""),
+      "\n	//" + (t.Var.has_presets ? "\n	styles: {}," : "")
     )
   );
   return doc;
@@ -964,12 +979,27 @@ var types_default = (x, t) => {
   doc = doc.replace(
     /__propsType__/,
     t.state(
-      "{\n	children: React.ReactNode\n}",
-      "{ " + propsType + " }",
-      "{\n	children: React.ReactNode\n	" + propsType + "\n}",
-      "{\n	//\n}"
+      "{\n	children: React.ReactNode\n" + (t.Var.has_presets ? "\nstyles?: Partial<Styles>\n	stylesPreset?: StylesPresets" : "") + "}",
+      "{\n	" + propsType + (t.Var.has_presets ? "\nstyles?: Partial<Styles>\n	stylesPreset?: StylesPresets" : "") + "\n}",
+      "{\n	children: React.ReactNode\n	" + propsType + (t.Var.has_presets ? "\nstyles?: Partial<Styles>\n	stylesPreset?: StylesPresets" : "") + "\n}",
+      "{\n	" + (t.Var.has_presets ? "\nstyles?: Partial<Styles>\n	stylesPreset?: StylesPresets" : "//") + "\n}"
     )
   );
+  doc = doc.replace(
+    /__exportPresets__/,
+    t.Var.has_presets ? `export type StylesPresets = 'default'` : ""
+  );
+  doc = doc.replace(
+    /__exportStyles__/,
+    t.Var.has_presets ? "export interface Styles {}" : ""
+  );
+  return doc;
+};
+
+// plop/plops/component_react/template/transform/presets.ts
+var presets_default = (x, t) => {
+  const {} = t.start;
+  let doc = x;
   return doc;
 };
 
@@ -1002,6 +1032,9 @@ var _Transform2 = class {
   static types(doc) {
     return types_default(doc, _Transform2);
   }
+  static presets(doc) {
+    return presets_default(doc, _Transform2);
+  }
 };
 var Transform2 = _Transform2;
 Transform2.Var = {
@@ -1020,7 +1053,8 @@ Transform2.Var = {
   has_styles: false,
   has_test: false,
   has_types: false,
-  has_chield: false
+  has_chield: false,
+  has_presets: false
 };
 
 // plop/plops/component_react/prompts.ts
@@ -1102,7 +1136,8 @@ var prompts2 = [
       "stories",
       "styles",
       "test",
-      "types"
+      "types",
+      "presets"
     ],
     filter: (input, answers) => {
       if (input.indexOf("index") > -1) {
@@ -1129,6 +1164,10 @@ var prompts2 = [
         Transform2.Var.has_types = true;
         answers.has_types = "true";
       }
+      if (input.indexOf("presets") > -1) {
+        Transform2.Var.has_presets = true;
+        answers.has_presets = "true";
+      }
       return input;
     }
   }
@@ -1143,7 +1182,8 @@ var myFiles2 = {
   stories: "stories.tsx",
   styles: "styles.tsx",
   test: "test.tsx",
-  types: "types.tsx"
+  types: "types.tsx",
+  presets: "presets.css.tsx"
 };
 var cases2 = cases_default("__", myFiles2);
 var cases_without_extension2 = Object.keys(cases2).reduce(
@@ -1198,6 +1238,9 @@ var resolve2 = [
   },
   {
     ...getPaths2("types", "has_types")
+  },
+  {
+    ...getPaths2("presets", "has_presets")
   }
 ];
 var actions_default3 = resolve2;
