@@ -3,18 +3,18 @@ import type {
   StoryObj,
 } from '@storybook/react'
 
-import { __imports__ } from '.'
+import { C8Button, M8Button } from '.'
 
 const meta = {
-  title: 'Components/__title__',
-  component: __component__,
+  title: 'Components/SeiLa/C8Button',
+  component: C8Button,
   tags: ['autodocs'],
-  args: __mock__.mock,
+  args: M8Button.mock,
   parameters: {
     layout: 'centered',
     background: null,
   },
-} satisfies Meta<typeof __component__>
+} satisfies Meta<typeof C8Button>
 
 export default meta
 type Story = StoryObj<typeof meta>

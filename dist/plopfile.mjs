@@ -899,10 +899,22 @@ var transform_default2 = (x, t) => {
   doc = doc.replace(
     /__return__/,
     t.state(
-      "(\n		<S.Main>\n			{children}\n		</S.Main>\n	)",
-      "(\n		<S.Main></S.Main>\n	)",
-      "(\n		<S.Main>\n			{children}\n		</S.Main>\n	)",
-      "(\n		<S.Main></S.Main>\n	)"
+      `(
+		<S.Main ${t.Var.has_presets ? "styles={Styles}" : ""}>
+			{children}
+		</S.Main>
+	)`,
+      `(
+		<S.Main ${t.Var.has_presets ? "styles={Styles}" : ""}></S.Main>
+	)`,
+      `(
+		<S.Main ${t.Var.has_presets ? "styles={Styles}" : ""}>
+			{children}
+		</S.Main>
+	)`,
+      `(
+		<S.Main ${t.Var.has_presets ? "styles={Styles}" : ""}></S.Main>
+	)`
     )
   );
   doc = doc.replace(
@@ -961,6 +973,24 @@ var stories_default = (x, t) => {
 // plop/plops/component_react/template/transform/styles.ts
 var styles_default = (x, t) => {
   let doc = x;
+  doc = doc.replace(
+    /__importStyles__/,
+    t.Var.has_presets ? `import { Styles } from './types'` : ""
+  );
+  doc = doc.replace(
+    /__typeStyles__/,
+    t.Var.has_presets ? `interface props {
+	styles: Styles
+}` : ""
+  );
+  doc = doc.replace(
+    /__typeProps__/,
+    t.Var.has_presets ? "<props>" : ""
+  );
+  doc = doc.replace(
+    /__initialProps__/,
+    t.Var.has_presets ? `theme, styles` : "theme"
+  );
   return doc;
 };
 

@@ -65,10 +65,18 @@ export default (x: string, t: typeof Transform) => {
   doc = doc.replace(
     /__return__/,
     t.state(
-      '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
-      '(\n\t\t<S.Main></S.Main>\n\t)',
-      '(\n\t\t<S.Main>\n\t\t\t{children}\n\t\t</S.Main>\n\t)',
-      '(\n\t\t<S.Main></S.Main>\n\t)',
+      `(\n\t\t<S.Main ${
+        t.Var.has_presets ? 'styles={Styles}' : ''
+      }>\n\t\t\t{children}\n\t\t</S.Main>\n\t)`,
+      `(\n\t\t<S.Main ${
+        t.Var.has_presets ? 'styles={Styles}' : ''
+      }></S.Main>\n\t)`,
+      `(\n\t\t<S.Main ${
+        t.Var.has_presets ? 'styles={Styles}' : ''
+      }>\n\t\t\t{children}\n\t\t</S.Main>\n\t)`,
+      `(\n\t\t<S.Main ${
+        t.Var.has_presets ? 'styles={Styles}' : ''
+      }></S.Main>\n\t)`,
     ),
   )
 
