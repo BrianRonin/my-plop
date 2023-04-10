@@ -1122,10 +1122,16 @@ var prompts2 = [
   },
   {
     type: "input",
-    name: "is_template",
+    name: "has_template",
     message: "\xC9 um template? ( y/ skip ) ",
-    filter: (input) => {
+    filter: (input, answers) => {
       Transform2.Var.is_template = !!input;
+      if (input) {
+        answers.folder_name = answers.name;
+        answers.base_path = "src/templates";
+      } else {
+        answers.base_path = "src/components";
+      }
       return input;
     }
   },
@@ -1136,20 +1142,43 @@ var prompts2 = [
     filter: (input, answers) => {
       const numbering = !!input ? input : "0";
       Transform2.Var.numbering = numbering;
+      answers.folder_name = answers.name + "_" + numbering;
       return numbering;
     },
     when: (answers) => {
-      return !answers.is_template;
+      return !answers.has_template;
     }
   },
   {
     type: "input",
     name: "group",
-    message: "Grupo: ",
-    filter: (input) => {
+    message: "src/components/",
+    filter: (input, answers) => {
       Transform2.Var.group = input;
       Transform2.Var.has_group = !!input;
+      if (!!input) {
+        answers.divisor = "/";
+      }
       return input;
+    },
+    when: (answers) => {
+      return !answers.has_template;
+    }
+  },
+  {
+    type: "input",
+    name: "group",
+    message: "src/templates/",
+    filter: (input, answers) => {
+      Transform2.Var.group = input;
+      Transform2.Var.has_group = !!input;
+      if (!!input) {
+        answers.divisor = "/";
+      }
+      return input;
+    },
+    when: (answers) => {
+      return !!answers.has_template;
     }
   },
   {
@@ -1269,12 +1298,10 @@ var filenames_default3 = {
 
 // plop/plops/component_react/actions.ts
 var getPaths2 = (whatIs, skip) => {
-  const name_folder = "{{ is_template }}" ? "{{ properCase name }}" : "{{ properCase name }}_{{ camelCase numbering }}";
-  const base = "{{ is_template }}" ? "src/templates/" : "src/components/";
   return {
     type: "add",
     templateFile: "plop/plops/component_react/template/generator/" + whatIs + ".hbs",
-    path: "{{ group }}" ? `${base}{{ properCase group }}/${name_folder}/` + filenames_default3[whatIs]("") : `${base}${name_folder}/` + filenames_default3[whatIs]("name"),
+    path: "{{ base_path }}/{{ properCase group }}{{ divisor }}{{ properCase folder_name }}/" + filenames_default3[whatIs]("name"),
     transform: (doc) => Transform2[whatIs](doc),
     skip: (answers) => {
       if (typeof skip === "boolean")

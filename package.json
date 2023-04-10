@@ -1,6 +1,6 @@
 {
   "name": "my-plopjs",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",

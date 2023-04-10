@@ -8,25 +8,15 @@ const getPaths = (
     | boolean
     | ((answers: Record<string, string>) => any),
 ) => {
-  const name_folder = '{{ is_template }}'
-    ? '{{ properCase name }}'
-    : '{{ properCase name }}_{{ camelCase numbering }}'
-
-  const base = '{{ is_template }}'
-    ? 'src/templates/'
-    : 'src/components/'
-
   return {
     type: 'add',
     templateFile:
       'plop/plops/component_react/template/generator/' +
       whatIs +
       '.hbs',
-    path: '{{ group }}'
-      ? `${base}{{ properCase group }}/${name_folder}/` +
-        filenames[whatIs]('')
-      : `${base}${name_folder}/` +
-        filenames[whatIs]('na' + 'me'), //diretorio destiono
+    path:
+      '{{ base_path }}/{{ properCase group }}{{ divisor }}{{ properCase folder_name }}/' +
+      filenames[whatIs]('na' + 'me'),
     transform: (doc: string) => Transform[whatIs](doc),
     skip: (answers: Record<string, string>) => {
       if (typeof skip === 'boolean') return skip

@@ -35,10 +35,16 @@ const prompts: Partial<PlopGeneratorConfig['prompts']> = [
   },
   {
     type: 'input',
-    name: 'is_template',
+    name: 'has_template',
     message: 'É um template? ( y/ skip ) ',
-    filter: (input) => {
+    filter: (input, answers) => {
       Transform.Var.is_template = !!input
+      if (input) {
+        answers.folder_name = answers.name
+        answers.base_path = 'src/templates'
+      } else {
+        answers.base_path = 'src/components'
+      }
       return input
     },
   },
@@ -49,20 +55,43 @@ const prompts: Partial<PlopGeneratorConfig['prompts']> = [
     filter: (input, answers) => {
       const numbering = !!input ? input : '0'
       Transform.Var.numbering = numbering
+      answers.folder_name = answers.name + '_' + numbering
       return numbering
     },
     when: (answers) => {
-      return !answers.is_template
+      return !answers.has_template
     },
   },
   {
     type: 'input',
     name: 'group',
-    message: 'Grupo: ',
-    filter: (input) => {
+    message: 'src/components/',
+    filter: (input, answers) => {
       Transform.Var.group = input
       Transform.Var.has_group = !!input
+      if (!!input) {
+        answers.divisor = '/'
+      }
       return input
+    },
+    when: (answers) => {
+      return !answers.has_template
+    },
+  },
+  {
+    type: 'input',
+    name: 'group',
+    message: 'src/templates/',
+    filter: (input, answers) => {
+      Transform.Var.group = input
+      Transform.Var.has_group = !!input
+      if (!!input) {
+        answers.divisor = '/'
+      }
+      return input
+    },
+    when: (answers) => {
+      return !!answers.has_template
     },
   },
   {
