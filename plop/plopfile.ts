@@ -13,8 +13,9 @@ export default function (plop: NodePlopAPI) {
   // plop generator code
   plop.setWelcomeMessage('Oque deseja criar?')
 
-  plop.setGenerator('component react', {
-    description: 'criação de componentes react com js/ts',
+  plop.setGenerator('component/template react', {
+    description:
+      'criação de componentes/templates react com js/ts',
     prompts: [...(prompts_components as any)],
     actions: [...actions_components],
   })
@@ -23,11 +24,6 @@ export default function (plop: NodePlopAPI) {
       'criação de componentes SVG react com js/ts',
     prompts: [...(prompts_components_svg as any)],
     actions: [...actions_components_svg],
-  })
-  plop.setGenerator('template react', {
-    description: 'criação de templates react com js/ts',
-    prompts: [...(prompts_template as any)],
-    actions: [...actions_template],
   })
   plop.setGenerator('plop', {
     description: 'criação de geradores de plop',

@@ -8,8 +8,14 @@ const getPaths = (
     | boolean
     | ((answers: Record<string, string>) => any),
 ) => {
-  const name_folder =
-    '{{ properCase name }}_{{ camelCase numbering }}'
+  const name_folder = '{{ is_template }}'
+    ? '{{ properCase name }}'
+    : '{{ properCase name }}_{{ camelCase numbering }}'
+
+  const base = '{{ is_template }}'
+    ? 'src/templates/'
+    : 'src/components/'
+
   return {
     type: 'add',
     templateFile:
@@ -17,9 +23,9 @@ const getPaths = (
       whatIs +
       '.hbs',
     path: '{{ group }}'
-      ? `src/components/{{ properCase group }}/${name_folder}/` +
+      ? `${base}{{ properCase group }}/${name_folder}/` +
         filenames[whatIs]('')
-      : `./src/components/${name_folder}/` +
+      : `${base}${name_folder}/` +
         filenames[whatIs]('na' + 'me'), //diretorio destiono
     transform: (doc: string) => Transform[whatIs](doc),
     skip: (answers: Record<string, string>) => {

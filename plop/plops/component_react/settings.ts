@@ -19,6 +19,7 @@ import file_name from './filenames'
 
 export default (var_: Input) => {
   const cases = {
+    template: '{{ properCase __ }}',
     component: '{{ properCase __ }}',
     prop: '{{ camelCase __ }}',
   }
@@ -38,24 +39,55 @@ export default (var_: Input) => {
   const Style = (x: string) =>
     `S${var_.numbering}${c.component(x)}`
 
+  const TypeTemplate = (x: string) => `T${c.template(x)}`
+  const MockTemplate = (x: string) => `M${c.template(x)}`
+  const ComponentTemplate = (x: string) =>
+    `${c.template(x)}`
+  const StyleTemplate = (x: string) => `S${c.template(x)}`
+
   const config = {
-    // *** General
+    // *** General component
     Type: {
       input: [var_.name, 'name'],
-      default: Type('name'),
+      default: var_.is_template
+        ? TypeTemplate('name')
+        : Type('name'),
     },
     Mock: {
       input: [var_.name, 'name'],
-      default: Mock('name'),
+      default: var_.is_template
+        ? MockTemplate('name')
+        : Mock('name'),
     },
     Component: {
       input: [var_.name, 'name'],
-      default: Component('name'),
+      default: var_.is_template
+        ? ComponentTemplate('name')
+        : Component('name'),
     },
     Style: {
       input: [var_.name, 'name'],
-      default: Style('name'),
+      default: var_.is_template
+        ? StyleTemplate('name')
+        : Style('name'),
     },
+    // *** General template
+    // TypeTemplate: {
+    //   input: [var_.name, 'name'],
+    //   default: TypeTemplate('name'),
+    // },
+    // MockTemplate: {
+    //   input: [var_.name, 'name'],
+    //   default: MockTemplate('name'),
+    // },
+    // ComponentTemplate: {
+    //   input: [var_.name, 'name'],
+    //   default: ComponentTemplate('name'),
+    // },
+    // StyleTemplate: {
+    //   input: [var_.name, 'name'],
+    //   default: StyleTemplate('name'),
+    // },
     // *** Index
     propsArg: {
       input: [var_.props.split(','), 'props'],

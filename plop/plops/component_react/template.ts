@@ -32,6 +32,7 @@ export default class Transform {
     has_types: false,
     has_chield: false,
     has_presets: false,
+    is_template: false,
   }
 
   public static get start(): StartReturn {

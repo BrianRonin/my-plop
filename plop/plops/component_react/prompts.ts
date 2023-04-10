@@ -20,6 +20,7 @@ export type Input = {
   props: string
   has_props: boolean
   has_chield: boolean
+  is_template: boolean
 }
 
 const prompts: Partial<PlopGeneratorConfig['prompts']> = [
@@ -34,12 +35,24 @@ const prompts: Partial<PlopGeneratorConfig['prompts']> = [
   },
   {
     type: 'input',
+    name: 'is_template',
+    message: 'É um template? ( y/ skip ) ',
+    filter: (input) => {
+      Transform.Var.is_template = !!input
+      return input
+    },
+  },
+  {
+    type: 'input',
     name: 'numbering',
     message: 'Numbering:  ',
     filter: (input, answers) => {
       const numbering = !!input ? input : '0'
       Transform.Var.numbering = numbering
       return numbering
+    },
+    when: (answers) => {
+      return !answers.is_template
     },
   },
   {
@@ -65,7 +78,7 @@ const prompts: Partial<PlopGeneratorConfig['prompts']> = [
   {
     type: 'input',
     name: 'has_chield',
-    message: 'O componente tem children? ( y/ skip ) ',
+    message: 'Tem children? ( y/ skip ) ',
     filter: (input) => {
       Transform.Var.has_chield = !!input
       return input

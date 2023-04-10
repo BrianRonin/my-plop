@@ -1,13 +1,34 @@
 import Transform from '../../template'
 
 export default (x: string, t: typeof Transform) => {
-  let { propsArg, propsType, Type } = t.start
+  let {
+    propsArg,
+    propsType,
+    Type,
+    Mock,
+    Style,
+    Component,
+  } = t.start
   // *** modify PROPS TYPES
   let doc = x
 
   doc = x.replace(
     /__importTypeFile__/,
     t.Var.has_types ? `import * as T from './types'` : '',
+  )
+
+  doc = doc.replace(
+    /__exportStyleFile__/,
+    t.Var.has_types
+      ? `export * as ${Style} from './styles'`
+      : '',
+  )
+
+  doc = doc.replace(
+    /__exportMockFile__/,
+    t.Var.has_types
+      ? `export * as ${Mock} from './mock'`
+      : '',
   )
 
   doc = doc.replace(
@@ -32,6 +53,9 @@ export default (x: string, t: typeof Transform) => {
             '{\n\t' + '//\n}',
           ),
   )
+
+  doc = doc.replace(/__componentName__/, Component)
+
   // *** modify PROPS
   doc = doc.replace(
     /__props__/,
