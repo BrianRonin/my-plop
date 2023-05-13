@@ -15,7 +15,7 @@ const getPaths = (
       whatIs +
       '.hbs',
     path:
-      '{{ base_path }}/{{ properCase group }}{{ divisor }}{{ properCase folder_name }}/' +
+      '{{ base_path }}/{{ group }}{{ properCase folder_name }}/' +
       filenames[whatIs]('na' + 'me'),
     transform: (doc: string) => Transform[whatIs](doc),
     skip: (answers: Record<string, string>) => {

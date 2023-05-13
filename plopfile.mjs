@@ -1301,7 +1301,7 @@ var getPaths2 = (whatIs, skip) => {
   return {
     type: "add",
     templateFile: "plop/plops/component_react/template/generator/" + whatIs + ".hbs",
-    path: "{{ base_path }}/{{ properCase group }}{{ divisor }}{{ properCase folder_name }}/" + filenames_default3[whatIs]("name"),
+    path: "{{ base_path }}/{{ group }}{{ properCase folder_name }}/" + filenames_default3[whatIs]("name"),
     transform: (doc) => Transform2[whatIs](doc),
     skip: (answers) => {
       if (typeof skip === "boolean")
